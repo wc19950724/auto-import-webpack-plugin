@@ -7,6 +7,10 @@
   "bin": {
     "auto-import": "bin/cli"
   },
+  "files": [
+    "/bin",
+    "/lib"
+  ],
   "scripts": {
     "build": "pnpm fix && rollup -c",
     "fix": "pnpm prettier && tsc && pnpm lint",
