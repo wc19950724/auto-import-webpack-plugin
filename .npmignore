@@ -2,6 +2,6 @@
 *
 
 # Except for specific directories and files
-!/bin/
-!/lib/
+!bin
+!lib
 !README.md
