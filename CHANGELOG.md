@@ -1,3 +1,12 @@
+## [0.0.5](https://github.com/wc19950724/auto-import-webpack-plugin/compare/v0.0.4...v0.0.5) (2023-05-11)
+
+
+### Bug Fixes
+
+*  logLevel ([5d069a6](https://github.com/wc19950724/auto-import-webpack-plugin/commit/5d069a6d51ceebc6dd80693a69112f0b9cc95996))
+
+
+
 ## [0.0.4](https://github.com/wc19950724/auto-import-webpack-plugin/compare/v0.0.3...v0.0.4) (2023-05-11)
 
 
