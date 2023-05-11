@@ -27,9 +27,9 @@ module.exports = defineConfig([
     ],
   },
   {
-    input: "src/index.ts",
+    input: "src/plugin.ts",
     output: {
-      file: "lib/index.js",
+      file: "lib/plugin.js",
       format: "cjs",
       banner: "#!/usr/bin/env node", // 添加 Node.js 环境运行的标识
     },

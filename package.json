@@ -2,7 +2,7 @@
   "name": "auto-import-webpack-plugin",
   "version": "0.0.2-beta.1",
   "description": "自动生成按需引入组件库",
-  "main": "lib/index.js",
+  "main": "lib/plugin.js",
   "typings": "lib/typings.d.ts",
   "bin": {
     "auto-import": "bin/cli"
