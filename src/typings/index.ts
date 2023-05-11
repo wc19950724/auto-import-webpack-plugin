@@ -6,7 +6,7 @@ export interface ProgramOptions {
 }
 
 export const optionsDefault: ProgramOptions = {
-  input: "",
+  input: "/",
   output: "auto-import.js",
   ignorePath: ".genaratorignore",
   resolvers: "element-ui",

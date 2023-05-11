@@ -21,6 +21,14 @@
   ],
   "author": "948533798@qq.com",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wc19950724/auto-import-webpack-plugin.git"
+  },
+  "bugs": {
+    "url": "https://github.com/wc19950724/auto-import-webpack-plugin/issues"
+  },
+  "homepage": "https://github.com/wc19950724/auto-import-webpack-plugin#readme",
   "devDependencies": {
     "@babel/core": "^7.21.8",
     "@babel/preset-env": "^7.21.5",
