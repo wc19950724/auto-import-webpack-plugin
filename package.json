@@ -3,11 +3,11 @@
   "version": "0.0.1-beta.1",
   "description": "自动生成按需引入组件库",
   "main": "lib/index.js",
+  "typings": "lib/typings.d.ts",
   "bin": {
     "auto-import": "bin/cli"
   },
   "scripts": {
-    "start": "node lib/cli.js",
     "build": "pnpm fix && rollup -c",
     "fix": "pnpm prettier && tsc && pnpm lint",
     "lint": "eslint **/*.{js,cjs,mjs,ts,cts,mts} --fix",
@@ -54,8 +54,7 @@
     "release-base-cli": "^0.0.1",
     "rollup": "^3.21.6",
     "tslib": "^2.5.0",
-    "typescript": "^5.0.4",
-    "webpack": "^5.82.0"
+    "typescript": "^5.0.4"
   },
   "lint-staged": {
     "*.{js,cjs,mjs,ts,cts,mts}": [
@@ -66,5 +65,11 @@
     "ghooks": {
       "pre-commit": "npx lint-staged --quiet --concurrent false"
     }
+  },
+  "dependencies": {
+    "webpack": "^5.82.1"
+  },
+  "peerDependencies": {
+    "webpack": ">=5"
   }
 }

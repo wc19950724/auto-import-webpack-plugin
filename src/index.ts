@@ -1,7 +1,7 @@
 import { Compiler } from "webpack";
 
-import { optionsDefault, ProgramOptions } from "./typings";
-import { run } from "./utils/utils";
+import scanProjectFiles from "./cli";
+import { optionsDefault, ProgramOptions } from "./types";
 
 class AutoImportPlugin {
   #resolvers: ProgramOptions["resolvers"];
@@ -18,24 +18,11 @@ class AutoImportPlugin {
   }
 
   apply(compiler: Compiler) {
-    compiler.hooks.beforeRun.tapAsync(
-      "AutoImportPlugin",
-      (compiler, callback) => {
-        // 在这里执行你的自定义脚本
-        run("node", [
-          "lib/cli.js",
-          "-i",
-          this.#input,
-          "-o",
-          this.#output,
-          "-r",
-          this.#resolvers,
-          "-n",
-          this.#ignorePath,
-        ]).finally(callback);
-      }
-    );
+    compiler.hooks.run.tapAsync("AutoImportPlugin", (compiler, callback) => {
+      // 在这里执行你的自定义脚本
+      scanProjectFiles().finally(callback);
+    });
   }
 }
 
-module.exports = AutoImportPlugin;
+export default AutoImportPlugin;

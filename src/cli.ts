@@ -12,7 +12,7 @@ import { program } from "commander";
 import ignore from "ignore";
 
 import { scanComponents, setGeneratorContent } from "./common/element-ui";
-import { optionsDefault, ProgramOptions } from "./typings";
+import { optionsDefault, ProgramOptions } from "./types";
 import logger from "./utils/logger";
 import { run, step } from "./utils/utils";
 
@@ -75,18 +75,22 @@ const getVueFiles = (directory: string) => {
 // 扫描项目文件
 const scanProjectFiles = async () => {
   step("扫描项目文件...");
-  const vueFiles = getVueFiles(
-    resolve(projectPath, (input || "").replace(/^\//, ""))
-  );
-  let importedComponents = new Set<string>();
+  try {
+    const vueFiles = getVueFiles(
+      resolve(projectPath, (input || "").replace(/^\//, ""))
+    );
+    let importedComponents = new Set<string>();
 
-  vueFiles.forEach((file) => {
-    if (resolvers === "element-ui") {
-      importedComponents = scanComponents(file);
-    }
-  });
+    vueFiles.forEach((file) => {
+      if (resolvers === "element-ui") {
+        importedComponents = scanComponents(file);
+      }
+    });
 
-  await generateAutoImportFile(importedComponents);
+    await generateAutoImportFile(importedComponents);
+  } catch (err) {
+    logger.error((err as Error).stack ?? err);
+  }
 };
 
 // 生成文件
@@ -114,7 +118,4 @@ const generateAutoImportFile = async (importedComponents: Set<string>) => {
   await run("npx", ["eslint", autoImportPath, "--fix"]);
 };
 
-// 执行扫描和生成操作
-scanProjectFiles().catch((err: Error) => {
-  logger.error(err.stack ?? err);
-});
+export default scanProjectFiles;
