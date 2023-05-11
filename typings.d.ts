@@ -7,10 +7,11 @@ declare class AutoImportPlugin {
 
 declare namespace AutoImportPlugin {
   interface Options {
-    input: string;
-    output: string;
-    ignorePath: string;
-    resolvers: "element-ui";
+    input?: string;
+    output?: string;
+    ignorePath?: string;
+    resolvers?: "element-ui";
+    logLevel?: "error" | "wran" | "info" | "none";
   }
 }
 

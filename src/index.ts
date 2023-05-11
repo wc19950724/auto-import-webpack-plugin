@@ -2,26 +2,25 @@ import {
   existsSync,
   mkdirSync,
   readdirSync,
-  readFileSync,
   statSync,
   unlinkSync,
   writeFileSync,
 } from "node:fs";
 import { dirname, resolve } from "node:path";
 
-import ignore from "ignore";
+import { Options } from "@typings";
+import { ESLint } from "eslint";
 
-import { scanComponents, setGeneratorContent } from "./common/element-ui";
-import { optionsDefault, ProgramOptions } from "./types";
-import logger from "./utils/logger";
-import { run, step } from "./utils/utils";
-
-const ignoreFile = ignore().add("node_modules");
-let options = optionsDefault;
-const importedComponents = new Set<string>();
-
-// 项目根路径
-const projectPath = process.cwd(); // 替换为你的项目路径
+import {
+  getImportedComponents,
+  getOptions,
+  ignoreFile,
+  projectPath,
+  setOptions,
+} from "@/common";
+import { scanComponents, setGeneratorContent } from "@/library/element-ui";
+import logger from "@/utils/logger";
+import { step } from "@/utils/utils";
 
 // 获取项目中的所有Vue文件路径
 const getVueFiles = (directory: string) => {
@@ -47,9 +46,10 @@ const getVueFiles = (directory: string) => {
 };
 
 // 扫描项目文件
-const scanProjectFiles = async (scanOptions?: ProgramOptions) => {
-  options = Object.assign({}, optionsDefault, scanOptions, options);
+const scanProjectFiles = async () => {
+  const options = getOptions();
   step("扫描项目文件...");
+  const importedComponents = getImportedComponents();
   const vueFiles = getVueFiles(
     resolve(projectPath, (options.input || "").replace(/^\//, ""))
   );
@@ -70,12 +70,16 @@ const scanProjectFiles = async (scanOptions?: ProgramOptions) => {
     });
   }
 
-  if (!hasNewItems) return;
+  if (!hasNewItems) {
+    logger.success("没有需要更新的组件");
+    return;
+  }
   await generateAutoImportFile(importedComponents);
 };
 
 // 生成文件
 const generateAutoImportFile = async (importedComponents: Set<string>) => {
+  const options = getOptions();
   step(`正在生成${options.output}`);
   const autoImportPath = resolve(projectPath, options.output);
 
@@ -83,6 +87,21 @@ const generateAutoImportFile = async (importedComponents: Set<string>) => {
   if (options.resolvers === "element-ui") {
     fileContent = setGeneratorContent(importedComponents);
   }
+  if (!ignoreFile.ignores(options.output)) {
+    try {
+      step(`check ${options.output}...`);
+      const eslint = new ESLint({
+        fix: true,
+      });
+      const [result] = await eslint.lintText(fileContent);
+      if (result.output) {
+        fileContent = result.output;
+      }
+    } catch (error) {
+      logger.error((error as Error).stack ?? error);
+    }
+  }
+
   // 清空或删除现有的 生成文件
   if (existsSync(autoImportPath)) {
     unlinkSync(autoImportPath);
@@ -96,29 +115,9 @@ const generateAutoImportFile = async (importedComponents: Set<string>) => {
 
   writeFileSync(autoImportPath, fileContent);
   step(`${options.output} 文件已生成`);
-
-  if (ignoreFile.ignores(options.output)) return;
-  step("正在格式化文件");
-  await run("npx", ["prettier", autoImportPath, "--write"], {
-    stdio: "inherit",
-  });
-  await run("npx", ["eslint", autoImportPath, "--fix"]);
 };
 
-const setOptions = async (params?: ProgramOptions) => {
-  options = Object.assign({}, params, options);
-
-  const projectIgnorePath = resolve(projectPath, options.ignorePath);
-
-  if (existsSync(projectIgnorePath)) {
-    const ignoreContext = readFileSync(projectIgnorePath)
-      .toString()
-      .replace(/\/$/gm, "");
-    ignoreFile.add(ignoreContext);
-  }
-};
-
-const main = async (params?: ProgramOptions) => {
+const main = async (params?: Options) => {
   await setOptions(params);
   await scanProjectFiles();
 };

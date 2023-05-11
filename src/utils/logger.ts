@@ -1,27 +1,47 @@
 import chalk from "chalk-cjs";
 
+import { getOptions } from "@/common";
+
 function error(...args: any[]) {
-  console.log(chalk.redBright(...args));
+  const { logLevel } = getOptions();
+  if (["error"].indexOf(logLevel) > -1) {
+    console.log(chalk.redBright(...args));
+  }
 }
 
 function warn(...args: any[]) {
-  console.log(chalk.yellowBright(...args));
+  const { logLevel } = getOptions();
+  if (["error", "warn"].indexOf(logLevel) > -1) {
+    console.log(chalk.yellowBright(...args));
+  }
 }
 
 function info(...args: any[]) {
-  console.log(chalk.blueBright(...args));
+  const { logLevel } = getOptions();
+  if (["error", "warn", "info"].indexOf(logLevel) > -1) {
+    console.log(chalk.blueBright(...args));
+  }
 }
 
 function success(...args: any[]) {
-  console.log(chalk.greenBright(...args));
+  const { logLevel } = getOptions();
+  if (["error", "warn", "info"].indexOf(logLevel) > -1) {
+    console.log(chalk.greenBright(...args));
+  }
 }
 
 function log(...args: any[]) {
-  console.log(...args);
+  const { logLevel } = getOptions();
+  if (["error", "warn", "info"].indexOf(logLevel) > -1) {
+    console.log(...args);
+  }
 }
 
 function path(...args: any[]) {
-  console.log(chalk.gray(...args));
+  const { logLevel } = getOptions();
+  if (["error", "warn", "info"].indexOf(logLevel) > -1) {
+    console.log(chalk.gray(...args));
+  }
 }
 
 export default {

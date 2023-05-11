@@ -1,21 +1,25 @@
+import { Options } from "@typings";
 import { Compiler } from "webpack";
 
-import { scanProjectFiles, setOptions } from ".";
-import { optionsDefault, ProgramOptions } from "./types";
-import logger from "./utils/logger";
+import { scanProjectFiles, setOptions } from "@/index";
+import logger from "@/utils/logger";
+
+import { optionsDefault } from "./common";
 
 class AutoImportPlugin {
-  #input: string;
-  #output: string;
-  #resolvers: ProgramOptions["resolvers"];
-  #ignorePath: string;
+  #input: Options["input"];
+  #output: Options["output"];
+  #resolvers: Options["resolvers"];
+  #ignorePath: Options["ignorePath"];
+  #logLevel: Options["logLevel"];
 
-  constructor(options: ProgramOptions) {
+  constructor(options?: Options) {
     options = Object.assign({}, optionsDefault, options);
     this.#input = options.input;
     this.#output = options.output;
     this.#resolvers = options.resolvers;
     this.#ignorePath = options.ignorePath;
+    this.#logLevel = options.logLevel;
   }
 
   apply(compiler: Compiler) {
@@ -28,6 +32,7 @@ class AutoImportPlugin {
           output: this.#output,
           resolvers: this.#resolvers,
           ignorePath: this.#ignorePath,
+          logLevel: this.#logLevel,
         })
           .catch((err: Error) => {
             logger.error(err.stack ?? err);
