@@ -1,3 +1,12 @@
+## [0.0.3](https://github.com/wc19950724/auto-import-webpack-plugin/compare/v0.0.2...v0.0.3) (2023-05-11)
+
+
+### Bug Fixes
+
+*  no such file ([5e35a71](https://github.com/wc19950724/auto-import-webpack-plugin/commit/5e35a718a26edc8bc9f9cc757354bc5e1454d3e5))
+
+
+
 ## [0.0.2](https://github.com/wc19950724/auto-import-webpack-plugin/compare/v0.0.2-beta.2...v0.0.2) (2023-05-11)
 
 
