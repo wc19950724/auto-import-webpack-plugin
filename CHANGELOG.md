@@ -1,3 +1,12 @@
+## [0.0.2-beta.2](https://github.com/wc19950724/auto-import-webpack-plugin/compare/v0.0.2-beta.1...v0.0.2-beta.2) (2023-05-11)
+
+
+### Features
+
+*  Detach cli & plugin ([1f2fe8c](https://github.com/wc19950724/auto-import-webpack-plugin/commit/1f2fe8c5acab0d0bc0adbb8bf611ae5f815493b2))
+
+
+
 ## [0.0.2-beta.1](https://github.com/wc19950724/auto-import-webpack-plugin/compare/v0.0.2-beta.0...v0.0.2-beta.1) (2023-05-11)
 
 
