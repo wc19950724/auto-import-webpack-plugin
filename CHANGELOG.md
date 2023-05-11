@@ -1,3 +1,12 @@
+## [0.0.1-beta.3](https://github.com/wc19950724/auto-import-webpack-plugin/compare/v0.0.1-beta.2...v0.0.1-beta.3) (2023-05-11)
+
+
+### Bug Fixes
+
+*  npmignore files ([0f5db3b](https://github.com/wc19950724/auto-import-webpack-plugin/commit/0f5db3b18585412815994361954528d2d59f5da8))
+
+
+
 ## [0.0.1-beta.2](https://github.com/wc19950724/auto-import-webpack-plugin/compare/v0.0.1-beta.1...v0.0.1-beta.2) (2023-05-11)
 
 
