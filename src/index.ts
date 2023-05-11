@@ -62,7 +62,9 @@ const scanProjectFiles = async () => {
         (item) => !importedComponents.has(item)
       );
       if (hasNewComponent) {
-        hasNewItems = true; // 如果有新增组件，将标志位设置为 true
+        if (!hasNewItems) {
+          hasNewItems = true; // 如果有新增组件，将标志位设置为 true
+        }
         for (const component of componentsSet) {
           importedComponents.add(component);
         }
