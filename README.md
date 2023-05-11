@@ -39,8 +39,9 @@ module.exports = {
     new AutoImport({
       input: "/",
       output: "auto-import.js",
-      ignorePath: ".genaratorignore",
       resolvers: "element-ui",
+      ignorePath: ".generatorignore",
+      logLevel: "info",
     }),
   ],
 };
