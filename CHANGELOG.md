@@ -1,3 +1,12 @@
+## [0.0.4](https://github.com/wc19950724/auto-import-webpack-plugin/compare/v0.0.3...v0.0.4) (2023-05-11)
+
+
+### Features
+
+*  logLevel & eslint ([aad221d](https://github.com/wc19950724/auto-import-webpack-plugin/commit/aad221d097a99f016129d0afbcfba24f82375322))
+
+
+
 ## [0.0.3](https://github.com/wc19950724/auto-import-webpack-plugin/compare/v0.0.2...v0.0.3) (2023-05-11)
 
 
