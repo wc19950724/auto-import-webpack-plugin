@@ -1,3 +1,7 @@
+## [0.0.1](https://github.com/wc19950724/auto-import-webpack-plugin/compare/v0.0.1-beta.3...v0.0.1) (2023-05-11)
+
+
+
 ## [0.0.1-beta.3](https://github.com/wc19950724/auto-import-webpack-plugin/compare/v0.0.1-beta.2...v0.0.1-beta.3) (2023-05-11)
 
 
