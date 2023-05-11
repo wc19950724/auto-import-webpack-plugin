@@ -1,3 +1,12 @@
+## [0.0.2-beta.1](https://github.com/wc19950724/auto-import-webpack-plugin/compare/v0.0.2-beta.0...v0.0.2-beta.1) (2023-05-11)
+
+
+### Performance Improvements
+
+*  default options ([eb2db6b](https://github.com/wc19950724/auto-import-webpack-plugin/commit/eb2db6b2d5784611ce9c32eaa3a7eae1d0e15ee1))
+
+
+
 ## [0.0.2-beta.0](https://github.com/wc19950724/auto-import-webpack-plugin/compare/v0.0.1...v0.0.2-beta.0) (2023-05-11)
 
 
