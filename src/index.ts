@@ -54,11 +54,14 @@ const scanProjectFiles = async (scanOptions?: ProgramOptions) => {
     );
     let importedComponents = new Set<string>();
 
-    vueFiles.forEach((file) => {
-      if (options.resolvers === "element-ui") {
-        importedComponents = scanComponents(file);
-      }
-    });
+    if (options.resolvers === "element-ui") {
+      vueFiles.forEach((file) => {
+        const componentsSet = scanComponents(file);
+        for (const component of componentsSet) {
+          importedComponents.add(component);
+        }
+      });
+    }
 
     await generateAutoImportFile(importedComponents);
   } catch (err) {
