@@ -1,6 +1,6 @@
 {
   "name": "auto-import-webpack-plugin",
-  "version": "0.0.1",
+  "version": "0.0.1-beta.0",
   "description": "自动生成按需引入组件库",
   "main": "lib/index.js",
   "bin": {
@@ -11,7 +11,8 @@
     "build": "pnpm fix && rollup -c",
     "fix": "pnpm prettier && tsc && pnpm lint",
     "lint": "eslint **/*.{js,cjs,mjs,ts,cts,mts} --fix",
-    "prettier": "prettier --ignore-path .eslintignore **/*.{js,cjs,mjs,ts,cts,mts} --write"
+    "prettier": "prettier --ignore-path .eslintignore **/*.{js,cjs,mjs,ts,cts,mts} --write",
+    "release": "release-cli"
   },
   "keywords": [
     "auto-import",
@@ -42,6 +43,7 @@
     "ignore": "^5.2.4",
     "lint-staged": "^13.2.2",
     "prettier": "^2.8.8",
+    "release-base-cli": "^0.0.1",
     "rollup": "^3.21.6",
     "tslib": "^2.5.0",
     "typescript": "^5.0.4",
