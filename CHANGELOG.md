@@ -1,3 +1,12 @@
+## [0.1.1](https://github.com/wc19950724/auto-import-webpack-plugin/compare/v0.1.0...v0.1.1) (2023-05-11)
+
+
+### Features
+
+*  prettier ([86236af](https://github.com/wc19950724/auto-import-webpack-plugin/commit/86236affcdea205570ab1479e574c5924fa48dd1))
+
+
+
 # [0.1.0](https://github.com/wc19950724/auto-import-webpack-plugin/compare/v0.0.6...v0.1.0) (2023-05-11)
 
 
