@@ -1,3 +1,12 @@
+## [0.0.2-beta.0](https://github.com/wc19950724/auto-import-webpack-plugin/compare/v0.0.1...v0.0.2-beta.0) (2023-05-11)
+
+
+### Performance Improvements
+
+*  remove npmignore ([e8c1249](https://github.com/wc19950724/auto-import-webpack-plugin/commit/e8c1249322accc5e344c8e9e978620d25b7cd162))
+
+
+
 ## [0.0.1](https://github.com/wc19950724/auto-import-webpack-plugin/compare/v0.0.1-beta.3...v0.0.1) (2023-05-11)
 
 
