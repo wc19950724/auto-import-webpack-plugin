@@ -27,18 +27,14 @@ program
   .option("-n, --ignore-path <ignore path>", "ignore scan files config")
   .parse(process.argv);
 
-const options = program.opts<ProgramOptions>();
+const programOptions = program.opts<ProgramOptions>();
 
-const { input, output, ignorePath, resolvers } = Object.assign(
-  {},
-  options,
-  optionsDefault
-);
+const options = Object.assign({}, programOptions, optionsDefault);
 
 // 项目根路径
 const projectPath = process.cwd(); // 替换为你的项目路径
 
-const projectIgnorePath = resolve(projectPath, ignorePath);
+const projectIgnorePath = resolve(projectPath, options.ignorePath);
 const ig = ignore();
 
 if (existsSync(projectIgnorePath)) {
@@ -73,16 +69,17 @@ const getVueFiles = (directory: string) => {
 };
 
 // 扫描项目文件
-const scanProjectFiles = async () => {
+const scanProjectFiles = async (scanOptions?: ProgramOptions) => {
+  Object.assign(options, scanOptions, optionsDefault);
   step("扫描项目文件...");
   try {
     const vueFiles = getVueFiles(
-      resolve(projectPath, (input || "").replace(/^\//, ""))
+      resolve(projectPath, (options.input || "").replace(/^\//, ""))
     );
     let importedComponents = new Set<string>();
 
     vueFiles.forEach((file) => {
-      if (resolvers === "element-ui") {
+      if (options.resolvers === "element-ui") {
         importedComponents = scanComponents(file);
       }
     });
@@ -95,11 +92,11 @@ const scanProjectFiles = async () => {
 
 // 生成文件
 const generateAutoImportFile = async (importedComponents: Set<string>) => {
-  step(`正在生成${output}`);
-  const autoImportPath = resolve(projectPath, output);
+  step(`正在生成${options.output}`);
+  const autoImportPath = resolve(projectPath, options.output);
 
   let fileContent = "";
-  if (resolvers === "element-ui") {
+  if (options.resolvers === "element-ui") {
     fileContent = setGeneratorContent(importedComponents);
   }
   // 清空或删除现有的 生成文件
@@ -108,9 +105,9 @@ const generateAutoImportFile = async (importedComponents: Set<string>) => {
   }
 
   writeFileSync(autoImportPath, fileContent);
-  step(`${output} 文件已生成`);
+  step(`${options.output} 文件已生成`);
 
-  if (ignoreFile.ignores(output)) return;
+  if (ignoreFile.ignores(options.output)) return;
   step("正在格式化文件");
   await run("npx", ["prettier", autoImportPath, "--write"], {
     stdio: "inherit",
