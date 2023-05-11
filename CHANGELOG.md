@@ -1,3 +1,12 @@
+## [0.0.2](https://github.com/wc19950724/auto-import-webpack-plugin/compare/v0.0.2-beta.2...v0.0.2) (2023-05-11)
+
+
+### Bug Fixes
+
+*  generator bug ([98912e7](https://github.com/wc19950724/auto-import-webpack-plugin/commit/98912e76f593ac463b856764126f697d5fa016a0))
+
+
+
 ## [0.0.2-beta.2](https://github.com/wc19950724/auto-import-webpack-plugin/compare/v0.0.2-beta.1...v0.0.2-beta.2) (2023-05-11)
 
 
