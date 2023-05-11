@@ -1,7 +1,7 @@
 export interface ProgramOptions {
   input: string;
   output: string;
-  resolvers: "element-ui" | "tdesign-vue-next";
+  resolvers: "element-ui";
   ignorePath: string;
 }
 

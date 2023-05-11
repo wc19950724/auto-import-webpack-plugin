@@ -5,6 +5,7 @@ import { program } from "commander";
 
 import main from ".";
 import { optionsDefault, ProgramOptions } from "./types";
+import logger from "./utils/logger";
 
 const pkgPath = resolve(__dirname, "..", "package.json");
 const pkg = JSON.parse(readFileSync(pkgPath, "utf-8"));
@@ -21,4 +22,6 @@ const programOptions = program.opts<ProgramOptions>();
 
 const options = Object.assign({}, programOptions, optionsDefault);
 
-main(options);
+main(options).catch((err: Error) => {
+  logger.error(err.stack ?? err);
+});

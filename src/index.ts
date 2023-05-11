@@ -1,12 +1,13 @@
 import {
   existsSync,
+  mkdirSync,
   readdirSync,
   readFileSync,
   statSync,
   unlinkSync,
   writeFileSync,
 } from "node:fs";
-import { resolve } from "node:path";
+import { dirname, resolve } from "node:path";
 
 import ignore from "ignore";
 
@@ -16,7 +17,8 @@ import logger from "./utils/logger";
 import { run, step } from "./utils/utils";
 
 const ignoreFile = ignore().add("node_modules");
-const options = optionsDefault;
+let options = optionsDefault;
+const importedComponents = new Set<string>();
 
 // 项目根路径
 const projectPath = process.cwd(); // 替换为你的项目路径
@@ -46,27 +48,30 @@ const getVueFiles = (directory: string) => {
 
 // 扫描项目文件
 const scanProjectFiles = async (scanOptions?: ProgramOptions) => {
-  Object.assign(options, scanOptions, optionsDefault);
+  options = Object.assign({}, optionsDefault, scanOptions, options);
   step("扫描项目文件...");
-  try {
-    const vueFiles = getVueFiles(
-      resolve(projectPath, (options.input || "").replace(/^\//, ""))
-    );
-    let importedComponents = new Set<string>();
-
-    if (options.resolvers === "element-ui") {
-      vueFiles.forEach((file) => {
-        const componentsSet = scanComponents(file);
+  const vueFiles = getVueFiles(
+    resolve(projectPath, (options.input || "").replace(/^\//, ""))
+  );
+  let hasNewItems = false; // 添加一个标志位，默认为 false
+  if (options.resolvers === "element-ui") {
+    vueFiles.forEach((file) => {
+      const componentsSet = scanComponents(file);
+      const componentsArray = Array.from(componentsSet);
+      const hasNewComponent = componentsArray.some(
+        (item) => !importedComponents.has(item)
+      );
+      if (hasNewComponent) {
+        hasNewItems = true; // 如果有新增组件，将标志位设置为 true
         for (const component of componentsSet) {
           importedComponents.add(component);
         }
-      });
-    }
-
-    await generateAutoImportFile(importedComponents);
-  } catch (err) {
-    logger.error((err as Error).stack ?? err);
+      }
+    });
   }
+
+  if (!hasNewItems) return;
+  await generateAutoImportFile(importedComponents);
 };
 
 // 生成文件
@@ -81,6 +86,12 @@ const generateAutoImportFile = async (importedComponents: Set<string>) => {
   // 清空或删除现有的 生成文件
   if (existsSync(autoImportPath)) {
     unlinkSync(autoImportPath);
+  } else {
+    // 确保目标目录存在
+    const targetDir = dirname(autoImportPath);
+    if (targetDir !== projectPath) {
+      mkdirSync(targetDir, { recursive: true });
+    }
   }
 
   writeFileSync(autoImportPath, fileContent);
@@ -94,8 +105,8 @@ const generateAutoImportFile = async (importedComponents: Set<string>) => {
   await run("npx", ["eslint", autoImportPath, "--fix"]);
 };
 
-const main = async (params?: ProgramOptions) => {
-  Object.assign(options, params);
+const setOptions = async (params?: ProgramOptions) => {
+  options = Object.assign({}, params, options);
 
   const projectIgnorePath = resolve(projectPath, options.ignorePath);
 
@@ -105,7 +116,13 @@ const main = async (params?: ProgramOptions) => {
       .replace(/\/$/gm, "");
     ignoreFile.add(ignoreContext);
   }
-  scanProjectFiles();
 };
+
+const main = async (params?: ProgramOptions) => {
+  await setOptions(params);
+  await scanProjectFiles();
+};
+
+export { scanProjectFiles, setOptions };
 
 export default main;

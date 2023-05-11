@@ -10,7 +10,7 @@ declare namespace AutoImportPlugin {
     input: string;
     output: string;
     ignorePath: string;
-    resolvers: string;
+    resolvers: "element-ui";
   }
 }
 

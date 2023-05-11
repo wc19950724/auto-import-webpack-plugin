@@ -1,7 +1,8 @@
 import { Compiler } from "webpack";
 
-import main from ".";
+import { scanProjectFiles, setOptions } from ".";
 import { optionsDefault, ProgramOptions } from "./types";
+import logger from "./utils/logger";
 
 class AutoImportPlugin {
   #input: string;
@@ -10,7 +11,7 @@ class AutoImportPlugin {
   #ignorePath: string;
 
   constructor(options: ProgramOptions) {
-    options = Object.assign({}, options, optionsDefault);
+    options = Object.assign({}, optionsDefault, options);
     this.#input = options.input;
     this.#output = options.output;
     this.#resolvers = options.resolvers;
@@ -18,15 +19,33 @@ class AutoImportPlugin {
   }
 
   apply(compiler: Compiler) {
-    compiler.hooks.run.tapAsync("AutoImportPlugin", (compiler, callback) => {
-      // 在这里执行你的自定义脚本
-      main({
-        input: this.#input,
-        output: this.#output,
-        resolvers: this.#resolvers,
-        ignorePath: this.#ignorePath,
-      }).finally(callback);
-    });
+    compiler.hooks.beforeRun.tapAsync(
+      "AutoImportPlugin",
+      (compiler, callback) => {
+        // 在这里执行你的自定义脚本
+        setOptions({
+          input: this.#input,
+          output: this.#output,
+          resolvers: this.#resolvers,
+          ignorePath: this.#ignorePath,
+        })
+          .catch((err: Error) => {
+            logger.error(err.stack ?? err);
+          })
+          .finally(callback);
+      }
+    );
+    compiler.hooks.beforeCompile.tapAsync(
+      "AutoImportPlugin",
+      (compiler, callback) => {
+        // 在这里执行你的自定义脚本
+        scanProjectFiles()
+          .catch((err: Error) => {
+            logger.error(err.stack ?? err);
+          })
+          .finally(callback);
+      }
+    );
   }
 }
 
