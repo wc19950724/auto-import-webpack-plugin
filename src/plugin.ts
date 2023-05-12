@@ -16,7 +16,7 @@ class AutoImportPlugin {
     try {
       await setOptions(this.#options);
       compiler.hooks.beforeCompile.tapAsync(
-        "AutoImportPlugin",
+        AutoImportPlugin.name,
         (compiler, callback) => {
           // 在这里执行你的自定义脚本
           scanProjectFiles()
