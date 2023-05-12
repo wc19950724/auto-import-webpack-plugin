@@ -1,33 +1,35 @@
 import { existsSync, mkdirSync, unlinkSync, writeFileSync } from "node:fs";
-import { dirname, resolve } from "node:path";
+import { dirname } from "node:path";
 
 import { Options } from "@typings";
 import { ESLint } from "eslint";
 import { format } from "prettier";
 
-import {
-  getImportedComponents,
-  getOptions,
-  projectPath,
-  setOptions,
-} from "@/common";
+import { getOptions, projectPath, setOptions } from "@/common";
 import { scanComponents, setGeneratorContent } from "@/library/element-ui";
 import logger from "@/utils/logger";
-import { getVueFiles, step } from "@/utils/utils";
+import {
+  checkExportName,
+  getEntryPath,
+  getImportedComponents,
+  getOutputPath,
+  getVueFiles,
+  step,
+} from "@/utils/utils";
 
 // 扫描项目文件
 const scanProjectFiles = async () => {
   const options = getOptions();
   step("scanning files...");
   const importedComponents = getImportedComponents();
-  const vueFiles = getVueFiles(
-    resolve(projectPath, (options.entry || "").replace(/^\//, ""))
-  );
+  const vueFiles = getVueFiles(getEntryPath());
   let hasNewItems = false; // 添加一个标志位，默认为 false
   if (options.resolvers === "element-ui") {
     vueFiles.forEach((file) => {
       const componentsSet = scanComponents(file);
-      const componentsArray = Array.from(componentsSet);
+      const componentsArray = Array.from(componentsSet).filter((component) =>
+        checkExportName(component, options.resolvers)
+      );
       const hasNewComponent = componentsArray.some(
         (item) => !importedComponents.has(item)
       );
@@ -53,7 +55,7 @@ const scanProjectFiles = async () => {
 const generateAutoImportFile = async (importedComponents: Set<string>) => {
   const options = getOptions();
   step(`generating ${options.output}...`);
-  const autoImportPath = resolve(projectPath, options.output);
+  const outputPath = getOutputPath();
 
   let fileContent = "";
   if (options.resolvers === "element-ui") {
@@ -79,17 +81,17 @@ const generateAutoImportFile = async (importedComponents: Set<string>) => {
   }
 
   // 清空或删除现有的 生成文件
-  if (existsSync(autoImportPath)) {
-    unlinkSync(autoImportPath);
+  if (existsSync(outputPath)) {
+    unlinkSync(outputPath);
   } else {
     // 确保目标目录存在
-    const targetDir = dirname(autoImportPath);
+    const targetDir = dirname(outputPath);
     if (targetDir !== projectPath) {
       mkdirSync(targetDir, { recursive: true });
     }
   }
 
-  writeFileSync(autoImportPath, fileContent);
+  writeFileSync(outputPath, fileContent);
   step(`${options.output} genarated!`);
 };
 

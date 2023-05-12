@@ -1,10 +1,9 @@
 import { Options } from "@typings";
 import { Compiler } from "webpack";
 
+import { optionsDefault } from "@/common";
 import { scanProjectFiles, setOptions } from "@/index";
 import logger from "@/utils/logger";
-
-import { optionsDefault } from "./common";
 
 class AutoImportPlugin {
   #options: Options;
