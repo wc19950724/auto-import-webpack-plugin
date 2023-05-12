@@ -1,3 +1,12 @@
+## [0.1.4](https://github.com/wc19950724/auto-import-webpack-plugin/compare/v0.1.3...v0.1.4) (2023-05-12)
+
+
+### Features
+
+*  check library ([1c8449e](https://github.com/wc19950724/auto-import-webpack-plugin/commit/1c8449ee79c8779dd64957157666c8b180da2e2c))
+
+
+
 ## [0.1.3](https://github.com/wc19950724/auto-import-webpack-plugin/compare/v0.1.2...v0.1.3) (2023-05-12)
 
 
