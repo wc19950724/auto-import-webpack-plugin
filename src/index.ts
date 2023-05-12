@@ -1,11 +1,4 @@
-import {
-  existsSync,
-  mkdirSync,
-  readdirSync,
-  statSync,
-  unlinkSync,
-  writeFileSync,
-} from "node:fs";
+import { existsSync, mkdirSync, unlinkSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 
 import { Options } from "@typings";
@@ -15,36 +8,12 @@ import { format } from "prettier";
 import {
   getImportedComponents,
   getOptions,
-  ignoreFile,
   projectPath,
   setOptions,
 } from "@/common";
 import { scanComponents, setGeneratorContent } from "@/library/element-ui";
 import logger from "@/utils/logger";
-import { step } from "@/utils/utils";
-
-// 获取项目中的所有Vue文件路径
-const getVueFiles = (directory: string) => {
-  const files = readdirSync(directory, { withFileTypes: true });
-
-  const vueFiles: string[] = [];
-
-  files.forEach((file) => {
-    if (ignoreFile.ignores(file.name)) return;
-
-    const filePath = resolve(directory, file.name);
-    const stat = statSync(filePath);
-
-    if (stat.isDirectory()) {
-      vueFiles.push(...getVueFiles(filePath));
-    } else if (stat.isFile() && file.name.endsWith(".vue")) {
-      logger.path(filePath);
-      vueFiles.push(filePath);
-    }
-  });
-
-  return vueFiles;
-};
+import { getVueFiles, step } from "@/utils/utils";
 
 // 扫描项目文件
 const scanProjectFiles = async () => {

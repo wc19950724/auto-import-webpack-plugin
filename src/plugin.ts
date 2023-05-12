@@ -7,53 +7,29 @@ import logger from "@/utils/logger";
 import { optionsDefault } from "./common";
 
 class AutoImportPlugin {
-  #entry: Options["entry"];
-  #output: Options["output"];
-  #resolvers: Options["resolvers"];
-  #ignorePath: Options["ignorePath"];
-  #logLevel: Options["logLevel"];
-  #check: Options["check"];
+  #options: Options;
 
   constructor(options?: Options) {
-    options = Object.assign({}, optionsDefault, options);
-    this.#entry = options.entry;
-    this.#output = options.output;
-    this.#resolvers = options.resolvers;
-    this.#ignorePath = options.ignorePath;
-    this.#logLevel = options.logLevel;
-    this.#check = options.check;
+    this.#options = Object.assign({}, optionsDefault, options);
   }
 
-  apply(compiler: Compiler) {
-    compiler.hooks.beforeRun.tapAsync(
-      "AutoImportPlugin",
-      (compiler, callback) => {
-        // 在这里执行你的自定义脚本
-        setOptions({
-          entry: this.#entry,
-          output: this.#output,
-          resolvers: this.#resolvers,
-          ignorePath: this.#ignorePath,
-          logLevel: this.#logLevel,
-          check: this.#check,
-        })
-          .catch((err: Error) => {
-            logger.error(err.stack ?? err);
-          })
-          .finally(callback);
-      }
-    );
-    compiler.hooks.beforeCompile.tapAsync(
-      "AutoImportPlugin",
-      (compiler, callback) => {
-        // 在这里执行你的自定义脚本
-        scanProjectFiles()
-          .catch((err: Error) => {
-            logger.error(err.stack ?? err);
-          })
-          .finally(callback);
-      }
-    );
+  async apply(compiler: Compiler) {
+    try {
+      await setOptions(this.#options);
+      compiler.hooks.beforeCompile.tapAsync(
+        "AutoImportPlugin",
+        (compiler, callback) => {
+          // 在这里执行你的自定义脚本
+          scanProjectFiles()
+            .catch((err: Error) => {
+              logger.error(err.stack ?? err);
+            })
+            .finally(callback);
+        }
+      );
+    } catch (err) {
+      logger.error((err as Error).stack ?? err);
+    }
   }
 }
 
