@@ -27,6 +27,10 @@ const checkIndex = process.argv.findIndex(
 );
 options.check = checkIndex === -1 || process.argv[checkIndex + 1] !== "false";
 
-main(options).catch((err: Error) => {
-  logger.error(err.stack ?? err);
-});
+main(options)
+  .catch((err: Error) => {
+    logger.error(err.stack ?? err);
+  })
+  .finally(() => {
+    process.exit(0);
+  });

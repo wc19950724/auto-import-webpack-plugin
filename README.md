@@ -67,11 +67,11 @@ Then add the scripts to your `package.json` config. For example:
 
 ```markdown
 -V, --version output the version number
--i, --input <name> input path
+-e, --entry <name> entry path
 -o, --output <name> output file
--r, --resolvers <value> components library: element-ui
--n, --ignore-path <name> ignore files config
--l, --log-level <value> log level: error | wran | info | none | true | false
+-r, --resolvers <value> library name
+-i, --ignore-path <name> entry ignore files config
+-l, --log-level <value> log level
 -c, --check check output file
 -h, --help display help for command
 ```
