@@ -1,3 +1,18 @@
+## [0.1.6](https://github.com/wc19950724/auto-import-webpack-plugin/compare/v0.1.5...v0.1.6) (2023-05-12)
+
+
+### Bug Fixes
+
+*  check default true ([e3bd9d0](https://github.com/wc19950724/auto-import-webpack-plugin/commit/e3bd9d090b0b5fa79c385d4680a024e07ee08954))
+
+
+### Performance Improvements
+
+*  plugin err & README ([7d0ef59](https://github.com/wc19950724/auto-import-webpack-plugin/commit/7d0ef599b70357794db036147881beb36842b724))
+*  plugin name ([adf61e0](https://github.com/wc19950724/auto-import-webpack-plugin/commit/adf61e0fb1069d8bf9b26f871c8be48d0c21138b))
+
+
+
 ## [0.1.5](https://github.com/wc19950724/auto-import-webpack-plugin/compare/v0.1.4...v0.1.5) (2023-05-12)
 
 
