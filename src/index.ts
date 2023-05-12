@@ -22,18 +22,17 @@ const scanProjectFiles = async () => {
   step("scanning files...");
   const importedComponents = getImportedComponents();
   const vueFiles = getVueFiles(getEntryPath());
-  let hasNewItems = false; // 添加一个标志位，默认为 false
+  let hasComponentChanged = false;
   if (options.resolvers === "element-ui") {
     vueFiles.forEach((file) => {
       const componentsSet = scanComponents(file);
-      const componentsArray = Array.from(componentsSet);
-      const hasNewComponent = componentsArray.some(
-        (item) => !importedComponents.has(item)
-      );
-      if (hasNewComponent) {
-        if (!hasNewItems) {
-          hasNewItems = true; // 如果有新增组件，将标志位设置为 true
+      for (const item of componentsSet) {
+        if (!importedComponents.has(item)) {
+          hasComponentChanged = true;
+          break;
         }
+      }
+      if (hasComponentChanged) {
         for (const component of componentsSet) {
           importedComponents.add(component);
         }
@@ -41,7 +40,7 @@ const scanProjectFiles = async () => {
     });
   }
 
-  if (!hasNewItems) {
+  if (!hasComponentChanged) {
     step("no update required");
     return;
   }
