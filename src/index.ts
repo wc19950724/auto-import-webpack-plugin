@@ -31,15 +31,14 @@ const scanProjectFiles = async () => {
       }
     });
   }
-  let hasComponentChanged = false;
-  for (const component of vueComponents) {
-    if (!importedComponents.has(component)) {
-      hasComponentChanged = true;
-      break;
-    }
-  }
+  let hasComponentChanged = vueComponents.size !== importedComponents.size;
   if (!hasComponentChanged) {
-    hasComponentChanged = vueComponents.size === importedComponents.size;
+    for (const component of vueComponents) {
+      if (!importedComponents.has(component)) {
+        hasComponentChanged = true;
+        break;
+      }
+    }
   }
   if (!hasComponentChanged) {
     step("no update required");
