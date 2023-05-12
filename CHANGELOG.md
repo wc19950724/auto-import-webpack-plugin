@@ -1,3 +1,12 @@
+## [0.1.8](https://github.com/wc19950724/auto-import-webpack-plugin/compare/v0.1.7...v0.1.8) (2023-05-12)
+
+
+### Performance Improvements
+
+*  component change ([ebfbeb0](https://github.com/wc19950724/auto-import-webpack-plugin/commit/ebfbeb0621056c4475bef7d4e1bc961da00ccb74))
+
+
+
 ## [0.1.7](https://github.com/wc19950724/auto-import-webpack-plugin/compare/v0.1.6...v0.1.7) (2023-05-12)
 
 
