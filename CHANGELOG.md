@@ -1,3 +1,12 @@
+## [0.1.2](https://github.com/wc19950724/auto-import-webpack-plugin/compare/v0.1.1...v0.1.2) (2023-05-12)
+
+
+### Features
+
+*  check process ([d35b859](https://github.com/wc19950724/auto-import-webpack-plugin/commit/d35b8599e6d8c403d9ddb0c9a84ab988a21f03a2))
+
+
+
 ## [0.1.1](https://github.com/wc19950724/auto-import-webpack-plugin/compare/v0.1.0...v0.1.1) (2023-05-11)
 
 
