@@ -9,6 +9,7 @@ import {
 import { dirname, resolve } from "node:path";
 
 import { Options } from "@typings";
+import { ESLint } from "eslint";
 import { format } from "prettier";
 
 import {
@@ -51,7 +52,7 @@ const scanProjectFiles = async () => {
   step("scanning files...");
   const importedComponents = getImportedComponents();
   const vueFiles = getVueFiles(
-    resolve(projectPath, (options.input || "").replace(/^\//, ""))
+    resolve(projectPath, (options.entry || "").replace(/^\//, ""))
   );
   let hasNewItems = false; // 添加一个标志位，默认为 false
   if (options.resolvers === "element-ui") {
@@ -94,6 +95,16 @@ const generateAutoImportFile = async (importedComponents: Set<string>) => {
     fileContent = format(fileContent, {
       parser: "babel",
     });
+    if (options.check) {
+      step(`checking ${options.output}...`);
+      const lint = new ESLint({
+        fix: true,
+      });
+      const [result] = await lint.lintText(fileContent);
+      if (result.output) {
+        fileContent = result.output;
+      }
+    }
   } catch (error) {
     logger.error((error as Error).stack ?? error);
   }

@@ -7,31 +7,25 @@ import { program } from "commander";
 import main from "@/index";
 import logger from "@/utils/logger";
 
-import { optionsDefault } from "./common";
-
-const { input, output, resolvers, ignorePath, logLevel } = optionsDefault;
-
 const pkgPath = resolve(__dirname, "..", "package.json");
 const pkg = JSON.parse(readFileSync(pkgPath, "utf-8"));
 program.name(pkg.name).version(pkg.version).description(pkg.description);
 
 program
-  .option("-i, --input <name>", "input path", input)
-  .option("-o, --output <name>", "output file", output)
-  .option(
-    "-r, --resolvers <value>",
-    "components library: element-ui",
-    resolvers
-  )
-  .option("-n, --ignore-path <name>", "ignore files config", ignorePath)
-  .option(
-    "-l, --log-level <value>",
-    "log level: error | wran | info | none | true | false",
-    logLevel
-  )
+  .option("-e, --entry <name>", "entry path")
+  .option("-o, --output <name>", "output file")
+  .option("-r, --resolvers <value>", "library name")
+  .option("-i, --ignore-path <name>", "entry ignore files config")
+  .option("-l, --log-level <value>", "log level")
+  .option("-c, --check", "check output file")
   .parse(process.argv);
 
 const options = program.opts<Options>();
+
+const checkIndex = process.argv.findIndex(
+  (arg) => ["-c", "--check"].indexOf(arg) > -1
+);
+options.check = checkIndex !== -1 && process.argv[checkIndex + 1] !== "false";
 
 main(options).catch((err: Error) => {
   logger.error(err.stack ?? err);

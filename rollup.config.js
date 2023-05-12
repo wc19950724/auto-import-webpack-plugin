@@ -25,7 +25,7 @@ module.exports = defineConfig([
         presets: ["@babel/preset-env"],
       }),
     ],
-    external: ["prettier"], // 确保 prettier 模块作为外部依赖项
+    external: ["prettier", "eslint"], // 确保模块作为外部依赖项
   },
   {
     input: "src/plugin.ts",
@@ -46,6 +46,6 @@ module.exports = defineConfig([
         presets: ["@babel/preset-env"],
       }),
     ],
-    external: ["prettier"], // 确保 prettier 模块作为外部依赖项
+    external: ["prettier", "eslint"], // 确保模块作为外部依赖项
   },
 ]);

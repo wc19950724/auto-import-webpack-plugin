@@ -5,11 +5,12 @@ import { Options } from "@typings";
 import ignore from "ignore";
 
 export const optionsDefault: Required<Options> = {
-  input: "/",
+  entry: "/",
   output: "auto-import.js",
   resolvers: "element-ui",
   ignorePath: ".generatorignore",
   logLevel: "info",
+  check: true,
 };
 
 let options = optionsDefault;

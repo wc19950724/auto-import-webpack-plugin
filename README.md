@@ -37,14 +37,43 @@ const AutoImport = require("auto-import-webpack-plugin");
 module.exports = {
   plugins: [
     new AutoImport({
-      input: "/",
-      output: "auto-import.js",
-      resolvers: "element-ui",
-      ignorePath: ".generatorignore",
-      logLevel: "info",
+      entry: "/", // entry path
+      output: "auto-import.js", // output path
+      resolvers: "element-ui", // library name
+      ignorePath: ".generatorignore", // entry ignore files config
+      logLevel: "info", // log level
+      check: true, // check output file
     }),
   ],
 };
+```
+
+or
+
+Then add the scripts to your `package.json` config. For example:
+
+**package.json**
+
+```js
+"scripts": {
+  "generator": "auto-import"
+},
+"devDependencies": {
+  "auto-import-webpack-plugin": "latest"
+}
+```
+
+**auto-import Description**
+
+```markdown
+-V, --version output the version number
+-i, --input <name> input path
+-o, --output <name> output file
+-r, --resolvers <value> components library: element-ui
+-n, --ignore-path <name> ignore files config
+-l, --log-level <value> log level: error | wran | info | none | true | false
+-c, --check check output file
+-h, --help display help for command
 ```
 
 ## License

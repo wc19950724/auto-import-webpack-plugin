@@ -7,19 +7,21 @@ import logger from "@/utils/logger";
 import { optionsDefault } from "./common";
 
 class AutoImportPlugin {
-  #input: Options["input"];
+  #entry: Options["entry"];
   #output: Options["output"];
   #resolvers: Options["resolvers"];
   #ignorePath: Options["ignorePath"];
   #logLevel: Options["logLevel"];
+  #check: Options["check"];
 
   constructor(options?: Options) {
     options = Object.assign({}, optionsDefault, options);
-    this.#input = options.input;
+    this.#entry = options.entry;
     this.#output = options.output;
     this.#resolvers = options.resolvers;
     this.#ignorePath = options.ignorePath;
     this.#logLevel = options.logLevel;
+    this.#check = options.check;
   }
 
   apply(compiler: Compiler) {
@@ -28,11 +30,12 @@ class AutoImportPlugin {
       (compiler, callback) => {
         // 在这里执行你的自定义脚本
         setOptions({
-          input: this.#input,
+          entry: this.#entry,
           output: this.#output,
           resolvers: this.#resolvers,
           ignorePath: this.#ignorePath,
           logLevel: this.#logLevel,
+          check: this.#check,
         })
           .catch((err: Error) => {
             logger.error(err.stack ?? err);
