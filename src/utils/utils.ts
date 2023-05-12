@@ -12,13 +12,6 @@ export const toPascalCase = (str: string) => {
   return str.replace(/^\w/, (c) => c.toUpperCase());
 };
 
-/** 校验导出名称是否真实存在 */
-export const checkExportName = (importName: string, library: string) => {
-  // 根据 importPath 加载对应的模块
-  const importedModule = require(library);
-  return !!importedModule[importName];
-};
-
 /** 扫描入口路径 */
 export const getEntryPath = () => {
   const options = getOptions();
@@ -33,7 +26,6 @@ export const getOutputPath = () => {
 
 /** 获取导入组件Set */
 export const getImportedComponents = () => {
-  const options = getOptions();
   const outputPath = getOutputPath();
   const importedComponents = new Set<string>();
   if (existsSync(outputPath)) {
@@ -49,9 +41,7 @@ export const getImportedComponents = () => {
 
       // 判断每个组件是否存在，并添加到 importedComponents 集合中
       componentNames.forEach((componentName) => {
-        if (checkExportName(componentName, options.resolvers)) {
-          importedComponents.add(componentName);
-        }
+        importedComponents.add(componentName);
       });
     }
   }

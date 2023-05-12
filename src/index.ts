@@ -9,7 +9,6 @@ import { getOptions, projectPath, setOptions } from "@/common";
 import { scanComponents, setGeneratorContent } from "@/library/element-ui";
 import logger from "@/utils/logger";
 import {
-  checkExportName,
   getEntryPath,
   getImportedComponents,
   getOutputPath,
@@ -27,9 +26,7 @@ const scanProjectFiles = async () => {
   if (options.resolvers === "element-ui") {
     vueFiles.forEach((file) => {
       const componentsSet = scanComponents(file);
-      const componentsArray = Array.from(componentsSet).filter((component) =>
-        checkExportName(component, options.resolvers)
-      );
+      const componentsArray = Array.from(componentsSet);
       const hasNewComponent = componentsArray.some(
         (item) => !importedComponents.has(item)
       );
