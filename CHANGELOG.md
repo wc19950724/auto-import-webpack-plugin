@@ -1,3 +1,12 @@
+## [0.1.5](https://github.com/wc19950724/auto-import-webpack-plugin/compare/v0.1.4...v0.1.5) (2023-05-12)
+
+
+### Bug Fixes
+
+*  remove check library ([44f234a](https://github.com/wc19950724/auto-import-webpack-plugin/commit/44f234aa608e771216e60b1e7cd73661ecbd2f94))
+
+
+
 ## [0.1.4](https://github.com/wc19950724/auto-import-webpack-plugin/compare/v0.1.3...v0.1.4) (2023-05-12)
 
 
