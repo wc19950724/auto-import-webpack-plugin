@@ -25,7 +25,7 @@ const options = program.opts<Options>();
 const checkIndex = process.argv.findIndex(
   (arg) => ["-c", "--check"].indexOf(arg) > -1
 );
-options.check = checkIndex !== -1 && process.argv[checkIndex + 1] !== "false";
+options.check = checkIndex === -1 || process.argv[checkIndex + 1] !== "false";
 
 main(options).catch((err: Error) => {
   logger.error(err.stack ?? err);
