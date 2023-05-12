@@ -39,7 +39,7 @@ export const specialComponents: SpecialTypes = {
 };
 
 export const scanComponents = (file: string) => {
-  const importedComponents = new Set<string>();
+  const vueComponents = new Set<string>();
   const fileContent = readFileSync(file, "utf-8");
 
   const componentRegex = /<(?:el-|El)([^>\s]+)(?=[\s>])/g;
@@ -50,11 +50,11 @@ export const scanComponents = (file: string) => {
   for (const match of componentMatches) {
     const componentName = match[1];
     const importedComponent = toPascalCase(componentName);
-    importedComponents.add(importedComponent);
+    vueComponents.add(importedComponent);
   }
 
   const directiveMatches = fileContent.match(directiveRegex);
-  if (directiveMatches?.length) importedComponents.add("Loading");
+  if (directiveMatches?.length) vueComponents.add("Loading");
 
   const propertyMatches = fileContent.matchAll(propertyRegex);
   for (const match of propertyMatches) {
@@ -65,14 +65,14 @@ export const scanComponents = (file: string) => {
       propertyName === "confirm" ||
       propertyName === "prompt"
     ) {
-      importedComponents.add("MessageBox");
+      vueComponents.add("MessageBox");
     } else if (propertyName === "notify") {
-      importedComponents.add("Notification");
+      vueComponents.add("Notification");
     } else if (propertyName === "message") {
-      importedComponents.add("Message");
+      vueComponents.add("Message");
     }
   }
-  return importedComponents;
+  return vueComponents;
 };
 
 const handleSpecialComponents = (component: string) => {
@@ -98,14 +98,12 @@ const handleSpecialComponents = (component: string) => {
   return importStatements.join("\n");
 };
 
-export const setGeneratorContent = (importedComponents: Set<string>) => {
+export const setGeneratorContent = (vueComponents: Set<string>) => {
   const importStatement = `import { ${Array.from(
-    importedComponents
+    vueComponents
   ).join()} } from "element-ui"`;
 
-  const componentsList = Array.from(importedComponents).map(
-    handleSpecialComponents
-  );
+  const componentsList = Array.from(vueComponents).map(handleSpecialComponents);
 
   let fileContent = `
     ${importStatement}

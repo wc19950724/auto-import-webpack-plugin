@@ -22,40 +22,41 @@ const scanProjectFiles = async () => {
   step("scanning files...");
   const importedComponents = getImportedComponents();
   const vueFiles = getVueFiles(getEntryPath());
-  let hasComponentChanged = false;
+  const vueComponents = new Set<string>();
   if (options.resolvers === "element-ui") {
     vueFiles.forEach((file) => {
       const componentsSet = scanComponents(file);
-      for (const item of componentsSet) {
-        if (!importedComponents.has(item)) {
-          hasComponentChanged = true;
-          break;
-        }
-      }
-      if (hasComponentChanged) {
-        for (const component of componentsSet) {
-          importedComponents.add(component);
-        }
+      for (const component of componentsSet) {
+        vueComponents.add(component);
       }
     });
   }
-
+  let hasComponentChanged = false;
+  for (const component of vueComponents) {
+    if (!importedComponents.has(component)) {
+      hasComponentChanged = true;
+      break;
+    }
+  }
+  if (!hasComponentChanged) {
+    hasComponentChanged = vueComponents.size === importedComponents.size;
+  }
   if (!hasComponentChanged) {
     step("no update required");
     return;
   }
-  await generateAutoImportFile(importedComponents);
+  await generateAutoImportFile(vueComponents);
 };
 
 // 生成文件
-const generateAutoImportFile = async (importedComponents: Set<string>) => {
+const generateAutoImportFile = async (vueComponents: Set<string>) => {
   const options = getOptions();
   step(`generating ${options.output}...`);
   const outputPath = getOutputPath();
 
   let fileContent = "";
   if (options.resolvers === "element-ui") {
-    fileContent = setGeneratorContent(importedComponents);
+    fileContent = setGeneratorContent(vueComponents);
   }
   try {
     step(`formatting ${options.output}...`);
