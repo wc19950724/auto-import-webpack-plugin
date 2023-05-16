@@ -70,8 +70,8 @@ devDependencies:
     specifier: ^13.2.2
     version: 13.2.2
   release-base-cli:
-    specifier: ^0.0.1
-    version: 0.0.1
+    specifier: ^0.0.3
+    version: 0.0.3
   rollup:
     specifier: ^3.21.7
     version: 3.21.7
@@ -2909,8 +2909,8 @@ packages:
       jsesc: 0.5.0
     dev: true
 
-  /release-base-cli@0.0.1:
-    resolution: {integrity: sha512-6LjELRJCJLS6YDTVHzyf72jxayUEUxaFqtlf2zf1U/xHyEWsGw/dvPnsoMPW9ETGbP8Izbgzcp96CVQj4ZhbTg==}
+  /release-base-cli@0.0.3:
+    resolution: {integrity: sha512-TaQjo5HPexwmU/CVnrjkc+6thE/s8+XgGZF6LP3J2CFTwQgztTAHMrwpu8WFuZ+kT313lk+Sx3MTvYtSogfesA==}
     hasBin: true
     dev: true
 

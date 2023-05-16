@@ -43,18 +43,8 @@ function copyFile(src, dest) {
 
 async function exec(file, arg = [], options = {}) {
   return new Promise((resolve) => {
-    const cmd = `${file} ${arg.join(" ")}`;
-    childProcess.exec(cmd, options, function (error, stdout, stderr) {
-      if (error) {
-        resolve({ success: false, stdout, stderr });
-      } else {
-        resolve({
-          success: true,
-          stdout,
-          stderr,
-        });
-      }
-    });
+    childProcess.spawnSync(file, arg, options);
+    resolve();
   });
 }
 

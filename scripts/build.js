@@ -12,10 +12,6 @@ async function build() {
       resolveRootPath("node_modules/rollup/dist/bin/rollup"),
       "-c",
       resolveRootPath("rollup.config.js"),
-      // '--environment',
-      // [
-      //   `PACKAGE_NAME:${dirName}`,
-      // ],
     ],
     { stdio: "inherit" }
   );
