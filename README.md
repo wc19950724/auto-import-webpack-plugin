@@ -11,19 +11,19 @@
 
 To begin, you'll need to install `auto-import-webpack-plugin`:
 
-```console
+```js
 npm install auto-import-webpack-plugin --save-dev
 ```
 
 or
 
-```console
+```js
 yarn add -D auto-import-webpack-plugin
 ```
 
 or
 
-```console
+```js
 pnpm add -D auto-import-webpack-plugin
 ```
 
@@ -54,7 +54,7 @@ Then add the scripts to your `package.json` config. For example:
 
 **package.json**
 
-```js
+```json
 "scripts": {
   "generator": "auto-import"
 },
