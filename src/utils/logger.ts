@@ -1,6 +1,6 @@
-import chalk from "chalk-cjs";
+import chalk from "chalk";
 
-import { getOptions } from "@/common";
+import { getOptions } from "../common";
 
 function error(...args: any[]) {
   const { logLevel } = getOptions();

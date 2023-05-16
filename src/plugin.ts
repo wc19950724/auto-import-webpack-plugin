@@ -1,8 +1,8 @@
-import { Options } from "@typings";
 import { Compiler } from "webpack";
 
-import { optionsDefault } from "@/common";
-import { scanProjectFiles, setOptions } from "@/index";
+import { optionsDefault } from "./common";
+import { scanProjectFiles, setOptions } from "./index";
+import { Options } from "./typings";
 
 class AutoImportPlugin {
   #options: Options;
@@ -15,7 +15,7 @@ class AutoImportPlugin {
     await setOptions(this.#options);
     compiler.hooks.beforeCompile.tapAsync(
       AutoImportPlugin.name,
-      (compiler, callback) => {
+      (_compiler: any, callback: any) => {
         // 在这里执行你的自定义脚本
         scanProjectFiles()
           .then(() => {

@@ -1,8 +1,9 @@
-const nodeResolve = require("@rollup/plugin-node-resolve");
-const commonjs = require("@rollup/plugin-commonjs");
 const babel = require("@rollup/plugin-babel");
-const typescript = require("@rollup/plugin-typescript");
+const commonjs = require("@rollup/plugin-commonjs");
+const nodeResolve = require("@rollup/plugin-node-resolve");
 const terser = require("@rollup/plugin-terser");
+const typescript = require("@rollup/plugin-typescript");
+const dts = require("rollup-plugin-dts");
 
 const { defineConfig } = require("rollup");
 
@@ -30,7 +31,6 @@ module.exports = defineConfig([
     output: {
       file: "lib/cli.js",
       format: "cjs",
-      banner: "#!/usr/bin/env node", // 添加 Node.js 环境运行的标识
     },
   },
   {
@@ -39,7 +39,15 @@ module.exports = defineConfig([
     output: {
       file: "lib/plugin.js",
       format: "cjs",
-      banner: "#!/usr/bin/env node", // 添加 Node.js 环境运行的标识
     },
+  },
+  {
+    // 生成 .d.ts 类型声明文件
+    input: "src/plugin.ts",
+    output: {
+      file: "lib/typings.d.ts",
+      format: "es",
+    },
+    plugins: [dts.default()],
   },
 ]);

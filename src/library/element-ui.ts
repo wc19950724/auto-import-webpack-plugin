@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 
-import { toPascalCase } from "@/utils/utils";
+import { toPascalCase } from "../utils/utils";
 
 interface SpecialTypes {
   [K: string]: {

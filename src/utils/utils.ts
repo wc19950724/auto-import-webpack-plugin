@@ -1,8 +1,8 @@
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { resolve } from "node:path";
 
-import { getOptions, ignoreFile, projectPath } from "@/common";
-import logger from "@/utils/logger";
+import { getOptions, ignoreFile, projectPath } from "../common";
+import logger from "../utils/logger";
 
 /** 步骤日志 */
 export const step = (msg: string) => logger.success(`\n${msg}`);

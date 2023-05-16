@@ -1,8 +1,9 @@
 import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
-import { Options } from "@typings";
 import ignore from "ignore";
+
+import { Options } from "../typings";
 
 /** 项目根路径 */
 export const projectPath = process.cwd();

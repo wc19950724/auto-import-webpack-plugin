@@ -1,11 +1,11 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
-import { Options } from "@typings";
 import { program } from "commander";
 
-import main from "@/index";
-import logger from "@/utils/logger";
+import main from "./index";
+import { Options } from "./typings";
+import logger from "./utils/logger";
 
 const pkgPath = resolve(__dirname, "..", "package.json");
 const pkg = JSON.parse(readFileSync(pkgPath, "utf-8"));

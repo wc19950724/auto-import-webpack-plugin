@@ -13,11 +13,7 @@
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "newLine": "LF",
-    "paths": {
-      "@/*": ["src/*"],
-      "@typings": ["typings.d.ts"]
-    }
+    "newLine": "LF"
   },
   "exclude": ["node_modules", "lib"]
 }

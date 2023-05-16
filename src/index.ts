@@ -1,20 +1,20 @@
 import { existsSync, mkdirSync, unlinkSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
 
-import { Options } from "@typings";
 import { ESLint } from "eslint";
 import { format } from "prettier";
 
-import { getOptions, projectPath, setOptions } from "@/common";
-import { scanComponents, setGeneratorContent } from "@/library/element-ui";
-import logger from "@/utils/logger";
+import { getOptions, projectPath, setOptions } from "./common";
+import { scanComponents, setGeneratorContent } from "./library/element-ui";
+import { Options } from "./typings";
+import logger from "./utils/logger";
 import {
   getEntryPath,
   getImportedComponents,
   getOutputPath,
   getVueFiles,
   step,
-} from "@/utils/utils";
+} from "./utils/utils";
 
 // 扫描项目文件
 const scanProjectFiles = async () => {
