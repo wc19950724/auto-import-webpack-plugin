@@ -4,5 +4,9 @@ export interface Options {
   ignorePath?: string;
   resolvers?: "element-ui";
   logLevel?: "error" | "wran" | "info" | "none";
-  check?: boolean;
+}
+
+export interface TextFile {
+  path: string;
+  data: string;
 }

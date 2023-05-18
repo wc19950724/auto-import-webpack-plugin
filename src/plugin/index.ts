@@ -1,8 +1,6 @@
-import { Compiler } from "webpack";
-
-import { optionsDefault } from "./common";
-import { scanProjectFiles, setOptions } from "./index";
-import { Options } from "./typings";
+import { scanProjectFiles, setOptions } from "@/main";
+import { Options } from "@/types";
+import { optionsDefault } from "@/utils/common";
 
 class AutoImportPlugin {
   #options: Options;
@@ -11,7 +9,7 @@ class AutoImportPlugin {
     this.#options = Object.assign({}, optionsDefault, options);
   }
 
-  async apply(compiler: Compiler) {
+  async apply(compiler: any) {
     await setOptions(this.#options);
     compiler.hooks.beforeCompile.tapAsync(
       AutoImportPlugin.name,

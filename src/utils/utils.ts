@@ -1,8 +1,15 @@
-import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
+import {
+  existsSync,
+  readdirSync,
+  readFile,
+  readFileSync,
+  statSync,
+} from "node:fs";
 import { resolve } from "node:path";
 
-import { getOptions, ignoreFile, projectPath } from "../common";
-import logger from "../utils/logger";
+import { TextFile } from "@/types";
+import { getOutputPath, ignoreFile } from "@/utils/common";
+import logger from "@/utils/logger";
 
 /** 步骤日志 */
 export const step = (msg: string) => logger.success(`\n${msg}`);
@@ -10,18 +17,6 @@ export const step = (msg: string) => logger.success(`\n${msg}`);
 /** 首字母转大写 */
 export const toPascalCase = (str: string) => {
   return str.replace(/^\w/, (c) => c.toUpperCase());
-};
-
-/** 扫描入口路径 */
-export const getEntryPath = () => {
-  const options = getOptions();
-  return resolve(projectPath, (options.entry || "").replace(/^\//, ""));
-};
-
-/** 输出文件路径 */
-export const getOutputPath = () => {
-  const options = getOptions();
-  return resolve(projectPath, options.output);
 };
 
 /** 获取导入组件Set */
@@ -70,3 +65,18 @@ export const getVueFiles = (directory: string) => {
 
   return vueFiles;
 };
+
+export function readTextFile(filePath: string): Promise<TextFile> {
+  return new Promise((resolve, reject) => {
+    readFile(filePath, "utf8", (err, text) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve({
+          path: filePath,
+          data: text,
+        });
+      }
+    });
+  });
+}

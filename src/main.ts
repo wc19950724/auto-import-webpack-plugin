@@ -1,20 +1,16 @@
 import { existsSync, mkdirSync, unlinkSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
 
-import { ESLint } from "eslint";
-import { format } from "prettier";
-
-import { getOptions, projectPath, setOptions } from "./common";
-import { scanComponents, setGeneratorContent } from "./library/element-ui";
-import { Options } from "./typings";
-import logger from "./utils/logger";
+import { scanComponents, setGeneratorContent } from "@/library/element-ui";
+import { Options } from "@/types";
 import {
   getEntryPath,
-  getImportedComponents,
+  getOptions,
   getOutputPath,
-  getVueFiles,
-  step,
-} from "./utils/utils";
+  projectPath,
+  setOptions,
+} from "@/utils/common";
+import { getImportedComponents, getVueFiles, step } from "@/utils/utils";
 
 // 扫描项目文件
 const scanProjectFiles = async () => {
@@ -56,24 +52,6 @@ const generateAutoImportFile = async (vueComponents: Set<string>) => {
   let fileContent = "";
   if (options.resolvers === "element-ui") {
     fileContent = setGeneratorContent(vueComponents);
-  }
-  try {
-    step(`formatting ${options.output}...`);
-    fileContent = format(fileContent, {
-      parser: "babel",
-    });
-    if (options.check) {
-      step(`checking ${options.output}...`);
-      const lint = new ESLint({
-        fix: true,
-      });
-      const [result] = await lint.lintText(fileContent);
-      if (result.output) {
-        fileContent = result.output;
-      }
-    }
-  } catch (error) {
-    logger.error((error as Error).stack ?? error);
   }
 
   // 清空或删除现有的 生成文件

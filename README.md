@@ -37,18 +37,33 @@ const AutoImport = require("auto-import-webpack-plugin");
 module.exports = {
   plugins: [
     new AutoImport({
-      entry: "/", // entry path
+      entry: ".", // entry path
       output: "auto-import.js", // output path
       resolvers: "element-ui", // library name
       ignorePath: ".generatorignore", // entry ignore files config
       logLevel: "info", // log level
-      check: true, // check output file
     }),
   ],
 };
 ```
 
 or
+
+```js
+import AutoImport from "auto-import-webpack-plugin";
+
+export default {
+  plugins: [
+    new AutoImport({
+      entry: ".", // entry path
+      output: "auto-import.js", // output path
+      resolvers: "element-ui", // library name
+      ignorePath: ".generatorignore", // entry ignore files config
+      logLevel: "info", // log level
+    }),
+  ],
+};
+```
 
 Then add the scripts to your `package.json` config. For example:
 
@@ -72,7 +87,6 @@ Then add the scripts to your `package.json` config. For example:
 -r, --resolvers <value> library name
 -i, --ignore-path <name> entry ignore files config
 -l, --log-level <value> log level
--c, --check check output file
 -h, --help display help for command
 ```
 

@@ -1,48 +1,28 @@
-import chalk from "chalk-cjs";
+import c from "picocolors";
 
-import { getOptions } from "../common";
+export const error = (msg?: string) => {
+  console.log(c.red(msg));
+};
 
-function error(...args: any[]) {
-  const { logLevel } = getOptions();
-  if (["error", "warn", "info"].indexOf(logLevel) > -1) {
-    console.log(chalk.redBright(...args));
-  }
-}
+export const warn = (msg?: string) => {
+  console.log(c.yellow(msg));
+};
 
-function warn(...args: any[]) {
-  const { logLevel } = getOptions();
-  if (["warn", "info"].indexOf(logLevel) > -1) {
-    console.log(chalk.yellowBright(...args));
-  }
-}
+export const info = (msg?: string) => {
+  console.log(c.blue(msg));
+};
 
-function info(...args: any[]) {
-  const { logLevel } = getOptions();
-  if (["info"].indexOf(logLevel) > -1) {
-    console.log(chalk.blueBright(...args));
-  }
-}
+export const success = (msg?: string) => {
+  console.log(c.green(msg));
+};
 
-function success(...args: any[]) {
-  const { logLevel } = getOptions();
-  if (["info"].indexOf(logLevel) > -1) {
-    console.log(chalk.greenBright(...args));
-  }
-}
+export const log = (msg?: string) => {
+  console.log(msg);
+};
 
-function log(...args: any[]) {
-  const { logLevel } = getOptions();
-  if (["info"].indexOf(logLevel) > -1) {
-    console.log(...args);
-  }
-}
-
-function path(...args: any[]) {
-  const { logLevel } = getOptions();
-  if (["info"].indexOf(logLevel) > -1) {
-    console.log(chalk.gray(...args));
-  }
-}
+export const path = (msg?: string) => {
+  console.log(c.gray(msg));
+};
 
 export default {
   error,
