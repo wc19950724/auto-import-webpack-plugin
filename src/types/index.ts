@@ -6,7 +6,4 @@ export interface Options {
   logLevel?: "error" | "wran" | "info" | "none";
 }
 
-export interface TextFile {
-  path: string;
-  data: string;
-}
+export type RequiredOptions = Required<Options>;

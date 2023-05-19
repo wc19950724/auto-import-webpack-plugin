@@ -1,18 +1,10 @@
-import {
-  existsSync,
-  readdirSync,
-  readFile,
-  readFileSync,
-  statSync,
-} from "node:fs";
+import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { resolve } from "node:path";
 
-import { TextFile } from "@/types";
-import { getOutputPath, ignoreFile } from "@/utils/common";
-import logger from "@/utils/logger";
+import { getOutputPath, ignoreFile, logger } from "@/utils";
 
 /** 步骤日志 */
-export const step = (msg: string) => logger.success(`\n${msg}`);
+export const step = (msg: string) => logger.success(`\n[AUTO] ${msg}`);
 
 /** 首字母转大写 */
 export const toPascalCase = (str: string) => {
@@ -58,25 +50,10 @@ export const getVueFiles = (directory: string) => {
     if (stat.isDirectory()) {
       vueFiles.push(...getVueFiles(filePath));
     } else if (stat.isFile() && file.name.endsWith(".vue")) {
-      logger.path(filePath);
+      logger.gray(filePath);
       vueFiles.push(filePath);
     }
   });
 
   return vueFiles;
 };
-
-export function readTextFile(filePath: string): Promise<TextFile> {
-  return new Promise((resolve, reject) => {
-    readFile(filePath, "utf8", (err, text) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve({
-          path: filePath,
-          data: text,
-        });
-      }
-    });
-  });
-}

@@ -29,9 +29,10 @@ const main = async () => {
       dts: true,
     }),
   ]);
-  console.log("\r");
+  console.log("\n");
   formatPkgJson();
   copyFiles(["LICENSE", "README.md"]);
+  step(baseOptions.outDir, "SIZE");
 };
 
 const formatPkgJson = () => {

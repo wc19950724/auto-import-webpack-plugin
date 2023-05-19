@@ -1,16 +1,18 @@
-import { existsSync, mkdirSync, unlinkSync, writeFileSync } from "node:fs";
-import { dirname } from "node:path";
+import fs from "node:fs";
+import path from "node:path";
 
 import { scanComponents, setGeneratorContent } from "@/library/element-ui";
 import { Options } from "@/types";
 import {
   getEntryPath,
+  getImportedComponents,
   getOptions,
   getOutputPath,
+  getVueFiles,
   projectPath,
   setOptions,
-} from "@/utils/common";
-import { getImportedComponents, getVueFiles, step } from "@/utils/utils";
+  step,
+} from "@/utils";
 
 // 扫描项目文件
 const scanProjectFiles = async () => {
@@ -53,19 +55,24 @@ const generateAutoImportFile = async (vueComponents: Set<string>) => {
   if (options.resolvers === "element-ui") {
     fileContent = setGeneratorContent(vueComponents);
   }
+  const prettier = require("prettier");
+
+  fileContent = prettier.format(fileContent, {
+    parser: "babel",
+  });
 
   // 清空或删除现有的 生成文件
-  if (existsSync(outputPath)) {
-    unlinkSync(outputPath);
+  if (fs.existsSync(outputPath)) {
+    fs.unlinkSync(outputPath);
   } else {
     // 确保目标目录存在
-    const targetDir = dirname(outputPath);
+    const targetDir = path.dirname(outputPath);
     if (targetDir !== projectPath) {
-      mkdirSync(targetDir, { recursive: true });
+      fs.mkdirSync(targetDir, { recursive: true });
     }
   }
 
-  writeFileSync(outputPath, fileContent);
+  fs.writeFileSync(outputPath, fileContent);
   step(`${options.output} genarated!`);
 };
 

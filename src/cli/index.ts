@@ -1,30 +1,50 @@
-import { readFileSync } from "node:fs";
-import { dirname, resolve } from "node:path";
+import fs from "node:fs";
+import path from "node:path";
 
-import { program } from "commander";
+import arg from "arg";
+import c from "picocolors";
 
 import main from "@/main";
-import { Options } from "@/types";
-import logger from "@/utils/logger";
+import { argsTips, formatArgs, logger, spec } from "@/utils";
 
-const pkgPath = resolve(dirname(__dirname), "..", "package.json");
-const pkg = JSON.parse(readFileSync(pkgPath, "utf-8"));
-program.name(pkg.name).version(pkg.version).description(pkg.description);
-
-program
-  .option("-e, --entry <name>", "entry path")
-  .option("-o, --output <name>", "output file")
-  .option("-r, --resolvers <value>", "library name")
-  .option("-i, --ignore-path <name>", "entry ignore files config")
-  .option("-l, --log-level <value>", "log level")
-  .parse(process.argv);
-
-const options = program.opts<Options>();
-
-main(options)
-  .catch((err: Error) => {
-    logger.error(err.stack);
-  })
-  .finally(() => {
-    process.exit(0);
+const cli = async () => {
+  const args = arg(spec, {
+    permissive: true,
   });
+
+  if (args["--help"]) {
+    const transformedSpec = new Map<string, string>();
+    for (const key in spec) {
+      const value = spec[key as keyof typeof spec];
+      const existingValue = spec[value as keyof typeof spec];
+      if (existingValue) {
+        transformedSpec.set(`${key}, ${value}`, key);
+        transformedSpec.delete(key);
+        transformedSpec.delete(`${value}`);
+      } else {
+        transformedSpec.set(key, key);
+      }
+    }
+    for (const [key, value] of transformedSpec) {
+      logger.warn(`\t${key}: ${c.bold(argsTips(value))}`);
+    }
+  } else if (args["--version"]) {
+    const pkgPath = path.resolve(path.dirname(__dirname), "..", "package.json");
+    const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf-8"));
+    logger.success(c.bold(pkg.version));
+  } else {
+    const options = formatArgs(args);
+
+    main(options)
+      .catch((err: Error) => {
+        logger.error(`${err.name}: ${err.message}`);
+      })
+      .finally(() => {
+        process.exit(0);
+      });
+  }
+};
+
+cli().catch((err: Error) => {
+  logger.error(`${err.name}: ${err.message}`);
+});

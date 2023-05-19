@@ -3,7 +3,7 @@ import { resolve } from "node:path";
 
 import ignore from "ignore";
 
-import { Options } from "@/types";
+import { Options, RequiredOptions } from "@/types";
 
 /** 项目根路径 */
 export const projectPath = process.cwd();
@@ -11,7 +11,7 @@ export const projectPath = process.cwd();
 /** 忽略文件 */
 export const ignoreFile = ignore().add("node_modules").add("/.*");
 
-export const optionsDefault: Required<Options> = {
+export const optionsDefault: RequiredOptions = {
   entry: ".",
   output: "auto-import.js",
   resolvers: "element-ui",

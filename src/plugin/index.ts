@@ -1,6 +1,6 @@
 import { scanProjectFiles, setOptions } from "@/main";
 import { Options } from "@/types";
-import { optionsDefault } from "@/utils/common";
+import { optionsDefault } from "@/utils";
 
 class AutoImportPlugin {
   #options: Options;
