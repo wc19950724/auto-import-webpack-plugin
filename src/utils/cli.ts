@@ -1,6 +1,11 @@
+import fs from "node:fs";
+import path from "node:path";
+
 import arg from "arg";
+import c from "picocolors";
 
 import { Options } from "@/types";
+import { logger } from "@/utils";
 
 export const spec: arg.Spec = {
   "--help": Boolean,
@@ -75,4 +80,28 @@ export const argsTips = (key: string) => {
       break;
   }
   return tip;
+};
+
+export const helpHandler = () => {
+  const transformedSpec = new Map<string, string>();
+  for (const key in spec) {
+    const value = spec[key as keyof typeof spec];
+    const existingValue = spec[value as keyof typeof spec];
+    if (existingValue) {
+      transformedSpec.set(`${key}, ${value}`, key);
+      transformedSpec.delete(key);
+      transformedSpec.delete(`${value}`);
+    } else {
+      transformedSpec.set(key, key);
+    }
+  }
+  for (const [key, value] of transformedSpec) {
+    logger.warn(`\t${key}: ${c.bold(argsTips(value))}`);
+  }
+};
+
+export const versionHandler = () => {
+  const pkgPath = path.resolve(path.dirname(__dirname), "..", "package.json");
+  const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf-8"));
+  logger.success(c.bold(pkg.version));
 };

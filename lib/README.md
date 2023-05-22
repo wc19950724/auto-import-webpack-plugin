@@ -81,13 +81,13 @@ Then add the scripts to your `package.json` config. For example:
 **auto-import Description**
 
 ```php
-        -h, --help:        cli help
-        -v, --version:     package version
-        -e, --entry:       scan entry default: '.'
-        -o, --output:      generator file path default: 'auto-import.js'
-        -r, --resolvers:   library name now only: 'element-ui'
-        -i, --ignore-path: ignore config path default: '.generatorignore'
-        -l, --log-level:   log level default: 'info'
+-h, --help:        cli help
+-v, --version:     package version
+-e, --entry:       scan entry default: '.'
+-o, --output:      generator file path default: 'auto-import.js'
+-r, --resolvers:   library name now only: 'element-ui'
+-i, --ignore-path: ignore config path default: '.generatorignore'
+-l, --log-level:   log level default: 'info'
 ```
 
 ## License
