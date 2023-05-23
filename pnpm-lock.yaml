@@ -46,8 +46,8 @@ devDependencies:
     specifier: ^1.0.0
     version: 1.0.0
   release-base-cli:
-    specifier: 0.0.6-beta.5
-    version: 0.0.6-beta.5
+    specifier: 0.0.6-beta.6
+    version: 0.0.6-beta.6
   tsup:
     specifier: ^6.7.0
     version: 6.7.0(typescript@5.0.4)
@@ -1843,8 +1843,8 @@ packages:
       picomatch: 2.3.1
     dev: true
 
-  /release-base-cli@0.0.6-beta.5:
-    resolution: {integrity: sha512-VLvpsCS8crl/D9Xt8w8LxgA+4yYqql/558LKn/M/hYPJUmgr6LOY6H7ngLxsYDkJeflh6IOLHO4jiJ9QH6j8tw==}
+  /release-base-cli@0.0.6-beta.6:
+    resolution: {integrity: sha512-bPnvPcKRg+qrOb5PqqFyFmVjbwBTHEBhq2MTLd7oXnXYN8SiUTBGtWEIx83DqAGhRsr/W4IB7E5lxHa0ca20dw==}
     hasBin: true
     dependencies:
       prompts: 2.4.2

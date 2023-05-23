@@ -1,6 +1,6 @@
 {
   "name": "auto-import-webpack-plugin",
-  "version": "0.1.11-beta.0",
+  "version": "0.1.11-beta.1",
   "description": "自动生成按需引入组件库",
   "main": "plugin.js",
   "module": "plugin.mjs",
@@ -51,7 +51,7 @@
     "ignore": "^5.2.4",
     "lint-staged": "^13.2.2",
     "picocolors": "^1.0.0",
-    "release-base-cli": "0.0.6-beta.5",
+    "release-base-cli": "0.0.6-beta.6",
     "tsup": "^6.7.0",
     "typescript": "^5.0.4"
   },
