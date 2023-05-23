@@ -8,7 +8,7 @@ export const step = (msg: string) => logger.success(`\n[AUTO] ${msg}`);
 
 /** 首字母转大写 */
 export const toPascalCase = (str: string) => {
-  return str.replace(/^\w/, (c) => c.toUpperCase());
+  return str.replace(/(?:^|-)(\w)/g, (_, c) => c.toUpperCase());
 };
 
 /** 获取导入组件Set */
