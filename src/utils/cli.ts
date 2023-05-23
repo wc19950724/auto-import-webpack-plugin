@@ -5,7 +5,7 @@ import arg from "arg";
 import c from "picocolors";
 
 import { Options } from "@/types";
-import { logger } from "@/utils";
+import { createFormat, logger, optionsDefault, PADDING } from "@/utils";
 
 export const spec: arg.Spec = {
   "--help": Boolean,
@@ -56,25 +56,32 @@ export const argsTips = (key: string) => {
   let tip = "";
   switch (key) {
     case "-h":
-      tip = " ".repeat(7) + "cli help";
+      tip = "cli help";
       break;
     case "-v":
-      tip = " ".repeat(4) + "package version";
+      tip = "package version";
       break;
     case "-e":
-      tip = " ".repeat(6) + "scan entry default: '.'";
+      tip = "scan entry".padEnd(PADDING) + `default: '${optionsDefault.entry}'`;
       break;
     case "-o":
-      tip = " ".repeat(5) + "generator file path default: 'auto-import.js'";
+      tip =
+        "generator file path".padEnd(PADDING) +
+        `default: '${optionsDefault.output}'`;
       break;
     case "-r":
-      tip = " ".repeat(2) + "library name now only: 'element-ui'";
+      tip =
+        "library name now".padEnd(PADDING) +
+        `only: '${optionsDefault.resolvers}'`;
       break;
     case "-i":
-      tip = "ignore config path default: '.generatorignore'";
+      tip =
+        "ignore config path".padEnd(PADDING) +
+        `default: '${optionsDefault.ignorePath}'`;
       break;
     case "-l":
-      tip = " ".repeat(2) + "log level default: 'info'";
+      tip =
+        "log level".padEnd(PADDING) + `default: '${optionsDefault.logLevel}'`;
       break;
     default:
       break;
@@ -95,8 +102,10 @@ export const helpHandler = () => {
       transformedSpec.set(key, key);
     }
   }
+  const formatText = createFormat(Object.fromEntries(transformedSpec));
+
   for (const [key, value] of transformedSpec) {
-    logger.warn(`\t${key}: ${c.bold(argsTips(value))}`);
+    logger.warn(`${formatText(key)}: ${c.bold(argsTips(value))}`);
   }
 };
 

@@ -47,3 +47,6 @@ export const getEntryPath = () => {
 export const getOutputPath = () => {
   return resolve(projectPath, options.output);
 };
+
+/** 文字边距值 */
+export const PADDING = 20;
