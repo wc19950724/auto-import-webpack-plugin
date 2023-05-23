@@ -15,16 +15,14 @@ const cli = async () => {
   } else {
     const options = formatArgs(args);
 
-    main(options)
-      .catch((err: Error) => {
-        logger.error(`${err.name}: ${err.message}`);
-      })
-      .finally(() => {
-        process.exit(0);
-      });
+    await main(options);
   }
 };
 
-cli().catch((err: Error) => {
-  logger.error(`${err.name}: ${err.message}`);
-});
+cli()
+  .catch((err: Error) => {
+    logger.error(`${err.name}: ${err.message}`);
+  })
+  .finally(() => {
+    process.exit(0);
+  });
