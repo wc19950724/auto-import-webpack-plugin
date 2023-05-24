@@ -13,7 +13,7 @@ const cli = async () => {
   } else if (args["--version"]) {
     versionHandler();
   } else {
-    const options = formatArgs(args);
+    const options = await formatArgs(args);
 
     await main(options);
   }
@@ -21,7 +21,7 @@ const cli = async () => {
 
 cli()
   .catch((err: Error) => {
-    logger.error(`${err.name}: ${err.message}`);
+    logger.error(err.stack ?? `${err.name}: ${err.message}`);
   })
   .finally(() => {
     process.exit(0);

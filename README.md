@@ -39,9 +39,9 @@ module.exports = {
     new AutoImport({
       entry: ".", // entry path
       output: "auto-import.js", // output path
-      resolvers: "element-ui", // library name
-      ignorePath: ".generatorignore", // entry ignore files config
-      logLevel: "info", // log level
+      library: "element-ui", // library name
+      ignore: ".autoignore", // entry ignore files config
+      logLevel: true, // log level
     }),
   ],
 };
@@ -57,9 +57,9 @@ export default {
     new AutoImport({
       entry: ".", // entry path
       output: "auto-import.js", // output path
-      resolvers: "element-ui", // library name
-      ignorePath: ".generatorignore", // entry ignore files config
-      logLevel: "info", // log level
+      library: "element-ui", // library name
+      ignore: ".autoignore", // entry ignore files config
+      logLevel: true, // log level
     }),
   ],
 };
@@ -81,14 +81,42 @@ Then add the scripts to your `package.json` config. For example:
 **auto-import Description**
 
 ```php
--h, --help       : cli help
--v, --version    : package version
--e, --entry      : scan entry          default: '.'
--o, --output     : generator file path default: 'auto-import.js'
--r, --resolvers  : library name now    only: 'element-ui'
--i, --ignore-path: ignore config path  default: '.generatorignore'
--l, --log-level  : log level           default: 'info'
+-h, --help   : cli help
+-v, --version: package version
+-c, --config : config filename default: 'atconfig.json'
 ```
+
+> **auto-import -c atconfig.json**
+>
+> > **autoconfig.json**
+> >
+> > > ```php
+> > > {
+> > >   "entry": ".",
+> > >   "output": "auto-import.js",
+> > >   "library": "element-ui",
+> > >   "ignore": ".autoignore",
+> > >   "logLevel": true
+> > > }
+> > > ```
+
+> **auto-import -c atconfig.js**
+>
+> > **autoconfig.js**
+> >
+> > > ```php
+> > > module.exports = {
+> > >   entry: ".",
+> > >   output: "auto-import.js",
+> > >   library: "element-ui",
+> > >   ignore: ".autoignore",
+> > >   logLevel: true,
+> > > };
+> > > ```
+
+## TypeScript
+
+[.d.ts](./plugin.d.ts)
 
 ## License
 

@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 
-import { toPascalCase } from "@/utils";
+import { ignoreComponent, toPascalCase } from "@/utils";
 
 interface SpecialTypes {
   [K: string]: {
@@ -50,11 +50,14 @@ export const scanComponents = (file: string) => {
   for (const match of componentMatches) {
     const componentName = match[1];
     const importedComponent = toPascalCase(componentName);
+    if (ignoreComponent(importedComponent)) continue;
     vueComponents.add(importedComponent);
   }
 
-  const directiveMatches = fileContent.match(directiveRegex);
-  if (directiveMatches?.length) vueComponents.add("Loading");
+  if (!ignoreComponent("Loading")) {
+    const directiveMatches = fileContent.match(directiveRegex);
+    if (directiveMatches?.length) vueComponents.add("Loading");
+  }
 
   const propertyMatches = fileContent.matchAll(propertyRegex);
   for (const match of propertyMatches) {
@@ -65,10 +68,13 @@ export const scanComponents = (file: string) => {
       propertyName === "confirm" ||
       propertyName === "prompt"
     ) {
+      if (ignoreComponent("MessageBox")) continue;
       vueComponents.add("MessageBox");
     } else if (propertyName === "notify") {
+      if (ignoreComponent("Notification")) continue;
       vueComponents.add("Notification");
     } else if (propertyName === "message") {
+      if (ignoreComponent("Message")) continue;
       vueComponents.add("Message");
     }
   }

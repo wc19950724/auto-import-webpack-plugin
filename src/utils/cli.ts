@@ -5,48 +5,94 @@ import arg from "arg";
 import c from "picocolors";
 
 import { Options } from "@/types";
-import { createFormat, logger, optionsDefault, PADDING } from "@/utils";
+import {
+  argsOptionsDefault,
+  createFormat,
+  formatStr,
+  logger,
+  optionsDefault,
+  PADDING,
+  projectPath,
+  replacer,
+  step,
+} from "@/utils";
 
-export const spec: arg.Spec = {
+export const spec = {
   "--help": Boolean,
   "--version": Boolean,
-  "--entry": String,
-  "--output": String,
-  "--resolvers": String,
-  "--ignore-path": String,
-  "--log-level": String,
+  "--config": String,
   "-h": "--help",
   "-v": "--version",
-  "-e": "--entry",
-  "-o": "--output",
-  "-r": "--resolvers",
-  "-i": "--ignore-path",
-  "-l": "--log-level",
+  "-c": "--config",
 };
 
-export const formatArgs = (args: arg.Result<typeof spec>): Options => {
+export const writeConfig = async (configPath: string) => {
+  const options: Options = {};
+
+  const fullPath = path.join(projectPath, configPath);
+  const fileExtension = path.extname(configPath).slice(1);
+  if (!fs.existsSync(fullPath)) {
+    let writeData = "";
+    const defaultWriteData = JSON.stringify(optionsDefault, replacer, 2);
+    if (fileExtension === "json") {
+      writeData = defaultWriteData;
+    } else if (fileExtension === "js") {
+      writeData = `module.exports = ${defaultWriteData
+        .replace(/"([^"]+)":/g, "$1:")
+        .replace(/"([^"]+)"/g, (match, p1) => {
+          if (p1.startsWith("/") && p1.lastIndexOf("/") > 0) {
+            const flags = p1.slice(p1.lastIndexOf("/") + 1);
+            const pattern = p1.slice(1, p1.lastIndexOf("/"));
+            return `/${pattern}/${flags}`;
+          } else {
+            return match;
+          }
+        })}`;
+    }
+    if (!writeData) {
+      throw new Error("write config is failed", { cause: configPath });
+    }
+    const { ESLint } = require("eslint");
+
+    const lint = new ESLint({ fix: true, cache: true });
+
+    const result = await lint.lintText(writeData);
+    // 输出修复后的代码
+    writeData = result?.[0]?.output || writeData;
+    fs.writeFileSync(fullPath, writeData);
+    step("generating default config");
+    logger.gray(fullPath);
+    Object.assign(options, optionsDefault);
+  } else {
+    if (fileExtension === "json") {
+      // 读取 JSON 文件
+      const fileContents = fs.readFileSync(fullPath, "utf8");
+      const jsonContents = JSON.parse(fileContents);
+      for (const key in jsonContents) {
+        jsonContents[key] = formatStr(jsonContents[key]);
+      }
+      Object.assign(options, jsonContents);
+    } else if (fileExtension === "js") {
+      // require JS 文件
+      const requiredModule: Options = require(fullPath);
+      Object.assign(options, requiredModule);
+    }
+  }
+  return options;
+};
+
+export const formatArgs = async (args: ReturnType<typeof arg<typeof spec>>) => {
   const options: Options = {};
   for (const key in args) {
-    const value = args[key];
-    switch (key) {
-      case "--entry":
-        options.entry = value;
-        break;
-      case "--output":
-        options.output = value;
-        break;
-      case "--resolvers":
-        options.resolvers = value;
-        break;
-      case "--ignore-path":
-        options.ignorePath = value;
-        break;
-      case "--log-level":
-        options.logLevel = value;
-        break;
-      default:
-        break;
+    if (key === "--config") {
+      const configPath = args[key] || argsOptionsDefault.config;
+      Object.assign(options, await writeConfig(configPath));
     }
+  }
+
+  if (!Object.keys(options).length) {
+    const configPath = argsOptionsDefault.config;
+    Object.assign(options, await writeConfig(configPath));
   }
 
   return options;
@@ -61,27 +107,10 @@ export const argsTips = (key: string) => {
     case "-v":
       tip = "package version";
       break;
-    case "-e":
-      tip = "scan entry".padEnd(PADDING) + `default: '${optionsDefault.entry}'`;
-      break;
-    case "-o":
+    case "-c":
       tip =
-        "generator file path".padEnd(PADDING) +
-        `default: '${optionsDefault.output}'`;
-      break;
-    case "-r":
-      tip =
-        "library name now".padEnd(PADDING) +
-        `only: '${optionsDefault.resolvers}'`;
-      break;
-    case "-i":
-      tip =
-        "ignore config path".padEnd(PADDING) +
-        `default: '${optionsDefault.ignorePath}'`;
-      break;
-    case "-l":
-      tip =
-        "log level".padEnd(PADDING) + `default: '${optionsDefault.logLevel}'`;
+        "config filename".padEnd(PADDING) +
+        `default: '${argsOptionsDefault.config}'`;
       break;
     default:
       break;
@@ -110,7 +139,7 @@ export const helpHandler = () => {
 };
 
 export const versionHandler = () => {
-  const pkgPath = path.resolve(path.dirname(__dirname), "..", "package.json");
+  const pkgPath = path.join(path.dirname(__dirname), "..", "package.json");
   const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf-8"));
   logger.success(c.bold(pkg.version));
 };

@@ -21,7 +21,7 @@ const scanProjectFiles = async () => {
   const importedComponents = getImportedComponents();
   const vueFiles = getVueFiles(getEntryPath());
   const vueComponents = new Set<string>();
-  if (options.resolvers === "element-ui") {
+  if (options.library === "element-ui") {
     vueFiles.forEach((file) => {
       const componentsSet = scanComponents(file);
       for (const component of componentsSet) {
@@ -52,15 +52,17 @@ const generateAutoImportFile = async (vueComponents: Set<string>) => {
   const outputPath = getOutputPath();
 
   let fileContent = "";
-  if (options.resolvers === "element-ui") {
+  if (options.library === "element-ui") {
     fileContent = setGeneratorContent(vueComponents);
   }
-  const prettier = require("prettier");
 
-  fileContent = prettier.format(fileContent, {
-    parser: "babel",
-  });
+  const { ESLint } = require("eslint");
 
+  const lint = new ESLint({ fix: true, cache: true });
+
+  const result = await lint.lintText(fileContent);
+  // 输出修复后的代码
+  fileContent = result?.[0]?.output || fileContent;
   // 清空或删除现有的 生成文件
   if (fs.existsSync(outputPath)) {
     fs.unlinkSync(outputPath);

@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/wc19950724/auto-import-webpack-plugin#readme",
   "dependencies": {
-    "prettier": "^2.8.8",
+    "eslint": "^8.41.0",
     "webpack": "^5.83.1"
   },
   "peerDependencies": {
