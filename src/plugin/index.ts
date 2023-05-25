@@ -27,4 +27,4 @@ class AutoImportPlugin {
   }
 }
 
-export default AutoImportPlugin;
+export { AutoImportPlugin, AutoImportPlugin as default };

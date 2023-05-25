@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 
-import { ignoreComponent, toPascalCase } from "@/utils";
+import { ignoreComponent, logger, step, toPascalCase } from "@/utils";
 
 interface SpecialTypes {
   [K: string]: {
@@ -47,16 +47,22 @@ export const scanComponents = (file: string) => {
   const propertyRegex = /\$(?:msgbox|alert|confirm|prompt|notify|message)/g;
 
   const componentMatches = fileContent.matchAll(componentRegex);
+  const ignoreComponents = new Set<string>();
   for (const match of componentMatches) {
     const componentName = match[1];
     const importedComponent = toPascalCase(componentName);
-    if (ignoreComponent(importedComponent)) continue;
+    if (ignoreComponent(importedComponent)) {
+      ignoreComponents.add(importedComponent);
+      continue;
+    }
     vueComponents.add(importedComponent);
   }
 
   if (!ignoreComponent("Loading")) {
     const directiveMatches = fileContent.match(directiveRegex);
     if (directiveMatches?.length) vueComponents.add("Loading");
+  } else {
+    ignoreComponents.add("Loading");
   }
 
   const propertyMatches = fileContent.matchAll(propertyRegex);
@@ -68,16 +74,33 @@ export const scanComponents = (file: string) => {
       propertyName === "confirm" ||
       propertyName === "prompt"
     ) {
-      if (ignoreComponent("MessageBox")) continue;
+      if (ignoreComponent("MessageBox")) {
+        ignoreComponents.add("MessageBox");
+        continue;
+      }
       vueComponents.add("MessageBox");
     } else if (propertyName === "notify") {
-      if (ignoreComponent("Notification")) continue;
+      if (ignoreComponent("Notification")) {
+        ignoreComponents.add("Notification");
+        continue;
+      }
       vueComponents.add("Notification");
     } else if (propertyName === "message") {
-      if (ignoreComponent("Message")) continue;
+      if (ignoreComponent("Message")) {
+        ignoreComponents.add("Message");
+        continue;
+      }
       vueComponents.add("Message");
     }
   }
+
+  if (ignoreComponents.size > 0) {
+    step("Ignore Components");
+    for (const ignoreItem of ignoreComponents) {
+      logger.gray(ignoreItem);
+    }
+  }
+
   return vueComponents;
 };
 

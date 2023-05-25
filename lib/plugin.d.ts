@@ -18,4 +18,4 @@ declare class AutoImportPlugin {
     apply(compiler: any): Promise<void>;
 }
 
-export { AutoImportPlugin as default };
+export { AutoImportPlugin, AutoImportPlugin as default };
