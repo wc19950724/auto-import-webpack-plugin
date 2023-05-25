@@ -33,19 +33,14 @@ class AutoImportPlugin {
       );
     } else {
       // 在 beforeRun 钩子中执行逻辑（构建打包模式）
-      compiler.hooks.beforeRun.tapAsync(
-        AutoImportPlugin.name,
-        (_compiler, callback) => {
-          // 在这里执行你的自定义脚本（只执行一次）
-          scanProjectFiles()
-            .then(() => {
-              callback();
-            })
-            .catch((err: Error) => {
-              callback(err);
-            });
+      compiler.hooks.beforeRun.tap(AutoImportPlugin.name, async () => {
+        // 在这里执行你的自定义脚本（只执行一次）
+        try {
+          await scanProjectFiles();
+        } catch (error) {
+          throw error as Error;
         }
-      );
+      });
     }
   }
 }
