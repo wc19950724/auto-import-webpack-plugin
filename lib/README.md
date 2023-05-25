@@ -86,33 +86,33 @@ Then add the scripts to your `package.json` config. For example:
 -c, --config : config filename default: 'atconfig.json'
 ```
 
-> **auto-import -c atconfig.json**
->
-> > **autoconfig.json**
-> >
-> > > ```php
-> > > {
-> > >   "entry": ".",
-> > >   "output": "auto-import.js",
-> > >   "library": "element-ui",
-> > >   "ignore": ".autoignore",
-> > >   "logLevel": true
-> > > }
-> > > ```
+**auto-import -c atconfig.json**
 
-> **auto-import -c atconfig.js**
+> **autoconfig.json**
 >
-> > **autoconfig.js**
-> >
-> > > ```php
-> > > module.exports = {
-> > >   entry: ".",
-> > >   output: "auto-import.js",
-> > >   library: "element-ui",
-> > >   ignore: ".autoignore",
-> > >   logLevel: true,
-> > > };
-> > > ```
+> ```php
+> {
+>   "entry": ".",
+>   "output": "auto-import.js",
+>   "library": "element-ui",
+>   "ignore": ".autoignore",
+>   "logLevel": true
+> }
+> ```
+
+**auto-import -c atconfig.js**
+
+> **autoconfig.js**
+>
+> ```php
+> module.exports = {
+>   entry: ".",
+>   output: "auto-import.js",
+>   library: "element-ui",
+>   ignore: ".autoignore",
+>   logLevel: true,
+> };
+> ```
 
 ## TypeScript
 
