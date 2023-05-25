@@ -1,3 +1,5 @@
+import { Compiler } from 'webpack';
+
 interface IgnoreConfig {
     path?: string;
     components?: Array<string | RegExp>;
@@ -15,7 +17,7 @@ interface Options {
 declare class AutoImportPlugin {
     #private;
     constructor(options?: Options);
-    apply(compiler: any): Promise<void>;
+    apply(compiler: Compiler): Promise<void>;
 }
 
 export { AutoImportPlugin, AutoImportPlugin as default };
