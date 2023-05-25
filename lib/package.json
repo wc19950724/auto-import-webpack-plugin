@@ -1,6 +1,6 @@
 {
   "name": "auto-import-webpack-plugin",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "description": "自动生成按需引入组件库",
   "main": "plugin.js",
   "module": "plugin.mjs",
