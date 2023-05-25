@@ -17,7 +17,7 @@ interface Options {
 declare class AutoImportPlugin {
     #private;
     constructor(options?: Options);
-    apply(compiler: Compiler): Promise<void>;
+    apply(compiler: Compiler): void;
 }
 
 export { AutoImportPlugin, AutoImportPlugin as default };
