@@ -1,6 +1,6 @@
 {
   "name": "auto-import-webpack-plugin",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "按需引入自动生成插件",
   "main": "plugin.js",
   "module": "plugin.mjs",
