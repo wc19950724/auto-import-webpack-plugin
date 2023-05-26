@@ -32,7 +32,7 @@
   "homepage": "https://github.com/wc19950724/auto-import-webpack-plugin#readme",
   "dependencies": {
     "eslint": "^8.41.0",
-    "webpack": "^5.83.1"
+    "webpack": "^5.84.1"
   },
   "peerDependencies": {
     "webpack": ">=5"
