@@ -1,17 +1,12 @@
 import fs from "node:fs";
 import path from "node:path";
 
-import arg from "arg";
-import c from "picocolors";
-
-import { Options } from "@/types";
+import { ArgsOptions, Options } from "@/types";
 import {
   argsOptionsDefault,
-  createFormat,
   formatStr,
   logger,
   optionsDefault,
-  PADDING,
   projectPath,
   replacer,
   step,
@@ -50,7 +45,7 @@ export const writeConfig = async (configPath: string) => {
         })}`;
     }
     if (!writeData) {
-      throw new Error("write config is failed", { cause: configPath });
+      throw new Error(`${configPath}: write config is failed`);
     }
     const { ESLint } = require("eslint");
 
@@ -81,10 +76,10 @@ export const writeConfig = async (configPath: string) => {
   return options;
 };
 
-export const formatArgs = async (args: ReturnType<typeof arg<typeof spec>>) => {
+export const formatArgs = async (args: ArgsOptions) => {
   const options: Options = {};
   for (const key in args) {
-    if (key === "--config") {
+    if (key === "config") {
       const configPath = args[key] || argsOptionsDefault.config;
       Object.assign(options, await writeConfig(configPath));
     }
@@ -96,50 +91,4 @@ export const formatArgs = async (args: ReturnType<typeof arg<typeof spec>>) => {
   }
 
   return options;
-};
-
-export const argsTips = (key: string) => {
-  let tip = "";
-  switch (key) {
-    case "-h":
-      tip = "cli help";
-      break;
-    case "-v":
-      tip = "package version";
-      break;
-    case "-c":
-      tip =
-        "config filename".padEnd(PADDING) +
-        `default: '${argsOptionsDefault.config}'`;
-      break;
-    default:
-      break;
-  }
-  return tip;
-};
-
-export const helpHandler = () => {
-  const transformedSpec = new Map<string, string>();
-  for (const key in spec) {
-    const value = spec[key as keyof typeof spec];
-    const existingValue = spec[value as keyof typeof spec];
-    if (existingValue) {
-      transformedSpec.set(`${key}, ${value}`, key);
-      transformedSpec.delete(key);
-      transformedSpec.delete(`${value}`);
-    } else {
-      transformedSpec.set(key, key);
-    }
-  }
-  const formatText = createFormat(Object.fromEntries(transformedSpec));
-
-  for (const [key, value] of transformedSpec) {
-    logger.warn(`${formatText(key)}: ${c.bold(argsTips(value))}`);
-  }
-};
-
-export const versionHandler = () => {
-  const pkgPath = path.join(path.dirname(__dirname), "..", "package.json");
-  const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf-8"));
-  logger.success(c.bold(pkg.version));
 };

@@ -82,9 +82,6 @@ export const getOutputPath = () => {
   return path.resolve(projectPath, options.output);
 };
 
-/** 文字边距值 */
-export const PADDING = 16;
-
 /** 步骤日志 */
 export const step = (msg: string) => logger.success(`\n[AUTO] ${msg}`);
 
@@ -141,14 +138,6 @@ export const getVueFiles = (directory: string) => {
   });
 
   return vueFiles;
-};
-
-/** 对齐输出内容 */
-export const createFormat = (msgObj: Record<string, string>) => {
-  const maxLength = Object.keys(msgObj).reduce((maxLength, key) => {
-    return key.length > maxLength ? key.length : maxLength;
-  }, 0);
-  return (key: string, fillString = " ") => key.padEnd(maxLength, fillString);
 };
 
 /** 自定义序列化函数，处理正则表达式 */
