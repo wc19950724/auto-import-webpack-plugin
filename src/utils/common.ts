@@ -106,7 +106,10 @@ export const getImportedComponents = () => {
 
     // 遍历匹配结果
     for (const match of matches) {
-      const componentNames = match[1].split(",").map((name) => name.trim());
+      const componentNames = match[1]
+        .split(",")
+        .map((name) => name.trim())
+        .filter(Boolean);
 
       // 判断每个组件是否存在，并添加到 importedComponents 集合中
       componentNames.forEach((componentName) => {

@@ -11,28 +11,35 @@ const baseOptions = {
 const rootPath = path.dirname(__dirname);
 
 const main = async () => {
-  await Promise.all([
-    build({
-      ...baseOptions,
-      entry: {
-        cli: "src/cli/index.ts",
-      },
-      format: "cjs",
-      clean: true,
-    }),
-    build({
-      ...baseOptions,
-      entry: {
-        plugin: "src/plugin/index.ts",
-      },
-      format: ["esm", "cjs"],
-      dts: true,
-    }),
-  ]);
+  await build({
+    ...baseOptions,
+    entry: {
+      cli: "src/cli/index.ts",
+      plugin: "src/plugin/index.ts",
+    },
+    format: ["esm", "cjs"],
+    clean: true,
+    dts: true,
+    splitting: true,
+    treeshake: true,
+    minify: true,
+  });
+  await formatLib();
   console.log("\n");
   formatPkgJson();
   copyFiles(["LICENSE", "README.md"]);
   step(baseOptions.outDir, "SIZE");
+};
+
+const formatLib = async () => {
+  try {
+    const ignoreFiles = ["cli.d.ts", "cli.mjs"];
+    for (const key of ignoreFiles) {
+      fs.unlinkSync(path.join(rootPath, baseOptions.outDir, key));
+    }
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const formatPkgJson = () => {
